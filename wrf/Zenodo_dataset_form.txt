@@ -1,0 +1,37 @@
+Text for the Zenodo upload form of the WRF data set (copy and paste)
+=====================================================================
+
+Resource type:  Dataset
+
+Title:  WRF-Chem fields for the INFLUX aircraft mass balance flights, 2011 to 2016
+
+Creators:  the authors of the paper, with affiliations and ORCIDs
+
+Description:
+Subset of the WRF-Chem (version 3.6.1) simulations used in Balashov, Barkley,
+Davis and Shepson (2026), "Evaluation of aircraft-based methane emissions
+estimates and estimation methodologies with six years of data from Indianapolis",
+Journal of Geophysical Research: Atmospheres. One MATLAB (HDF5) file per flight
+day, 37 files, holds the fields the analyses of the paper use: earth-relative
+wind, potential temperature, height, pressure and boundary layer height on the
+lowest 25 levels of the 3 km domain within 160 km of Indianapolis (the whole
+3 km domain on 11/19/2014), every hour from 8 h before the first aircraft
+transect to 1 h after the last one, and the eight CH4 tracers (five regional
+source categories of the EPA gridded inventory and three Marion County tracers)
+during the flight hours. WRF_configuration.txt documents the complete model
+configuration of both domains; WRF_subsets_README.txt describes every variable
+and gives reading examples for MATLAB and Python. The analysis code that reads
+these files is archived separately (https://doi.org/10.5281/zenodo.[[record number]]).
+
+Keywords:  methane; WRF-Chem; Indianapolis; INFLUX; aircraft mass balance; urban emissions
+
+License:  Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Related works:
+  is supplement to     the paper's DOI (add it when the paper is accepted)
+  is supplemented by   https://doi.org/10.5281/zenodo.[[record number]]  (the code record)
+
+Files to upload (4.2 GB):
+  WRF_subset_20110301.mat ... WRF_subset_20160318.mat   (37 files)
+  WRF_configuration.txt
+  WRF_subsets_README.txt

@@ -1,0 +1,308 @@
+WRF-Chem configuration recovered from the global attributes of the wrfout files
+28-Oct-2026 21:07:17
+
+==== Settings common to all runs (from WRF_021613) ====
+
+--- domain d01 ---
+TITLE                                =  OUTPUT FROM *             PROGRAM:WRF/CHEM V3.6.1 MODEL
+START_DATE                           = 2013-02-15_00:00:00
+SIMULATION_START_DATE                = 2013-02-15_00:00:00
+WEST_EAST_GRID_DIMENSION             = 214
+SOUTH_NORTH_GRID_DIMENSION           = 248
+BOTTOM_TOP_GRID_DIMENSION            = 51
+DX                                   = 9000
+DY                                   = 9000
+STOCH_FORCE_OPT                      = 0
+GRIDTYPE                             = C
+DIFF_OPT                             = 1
+KM_OPT                               = 4
+DAMP_OPT                             = 3
+DAMPCOEF                             = 0.2
+KHDIF                                = 0
+KVDIF                                = 0
+MP_PHYSICS                           = 8
+RA_LW_PHYSICS                        = 1
+RA_SW_PHYSICS                        = 1
+SF_SFCLAY_PHYSICS                    = 5
+SF_SURFACE_PHYSICS                   = 2
+BL_PBL_PHYSICS                       = 5
+CU_PHYSICS                           = 1
+SF_LAKE_PHYSICS                      = 0
+SURFACE_INPUT_SOURCE                 = 1
+SST_UPDATE                           = 1
+GRID_FDDA                            = 0
+GFDDA_INTERVAL_M                     = 0
+GFDDA_END_H                          = 0
+GRID_SFDDA                           = 0
+SGFDDA_INTERVAL_M                    = 0
+SGFDDA_END_H                         = 0
+HYPSOMETRIC_OPT                      = 2
+SF_URBAN_PHYSICS                     = 0
+SHCU_PHYSICS                         = 0
+MFSHCONV                             = 0
+FEEDBACK                             = 0
+SMOOTH_OPTION                        = 0
+SWRAD_SCAT                           = 1
+W_DAMPING                            = 0
+DT                                   = 30
+RADT                                 = 15
+BLDT                                 = 0
+CUDT                                 = 0
+AER_OPT                              = 0
+SWINT_OPT                            = 0
+AER_TYPE                             = 1
+AER_AOD550_OPT                       = 1
+AER_ANGEXP_OPT                       = 1
+AER_SSA_OPT                          = 1
+AER_ASY_OPT                          = 1
+AER_AOD550_VAL                       = 0.12
+AER_ANGEXP_VAL                       = 1.3
+AER_SSA_VAL                          = 1.4013e-45
+AER_ASY_VAL                          = 1.4013e-45
+MOIST_ADV_OPT                        = 1
+SCALAR_ADV_OPT                       = 1
+TKE_ADV_OPT                          = 1
+DIFF_6TH_OPT                         = 2
+DIFF_6TH_FACTOR                      = 0.12
+OBS_NUDGE_OPT                        = 0
+BUCKET_MM                            = -1
+BUCKET_J                             = -1
+PREC_ACC_DT                          = 0
+SF_OCEAN_PHYSICS                     = 0
+ISFTCFLX                             = 0
+ISHALLOW                             = 0
+ISFFLX                               = 1
+ICLOUD                               = 1
+ICLOUD_CU                            = 0
+TRACER_PBLMIX                        = 1
+SCALAR_PBLMIX                        = 0
+GRAV_SETTLING                        = 0
+DFI_OPT                              = 0
+WEST_EAST_PATCH_START_UNSTAG         = 1
+WEST_EAST_PATCH_END_UNSTAG           = 213
+WEST_EAST_PATCH_START_STAG           = 1
+WEST_EAST_PATCH_END_STAG             = 214
+SOUTH_NORTH_PATCH_START_UNSTAG       = 1
+SOUTH_NORTH_PATCH_END_UNSTAG         = 247
+SOUTH_NORTH_PATCH_START_STAG         = 1
+SOUTH_NORTH_PATCH_END_STAG           = 248
+BOTTOM_TOP_PATCH_START_UNSTAG        = 1
+BOTTOM_TOP_PATCH_END_UNSTAG          = 50
+BOTTOM_TOP_PATCH_START_STAG          = 1
+BOTTOM_TOP_PATCH_END_STAG            = 51
+GRID_ID                              = 1
+PARENT_ID                            = 0
+I_PARENT_START                       = 1
+J_PARENT_START                       = 1
+PARENT_GRID_RATIO                    = 1
+CEN_LAT                              = 39.19
+CEN_LON                              = -88.05
+TRUELAT1                             = 30
+TRUELAT2                             = 60
+MOAD_CEN_LAT                         = 39.19
+STAND_LON                            = -88
+POLE_LAT                             = 90
+POLE_LON                             = 0
+GMT                                  = 0
+JULYR                                = 2013
+JULDAY                               = 46
+MAP_PROJ                             = 1
+MAP_PROJ_CHAR                        = Lambert Conformal
+MMINLU                               = USGS
+NUM_LAND_CAT                         = 24
+ISWATER                              = 16
+ISLAKE                               = -1
+ISICE                                = 24
+ISURBAN                              = 1
+ISOILWATER                           = 14
+
+--- domain d02 ---
+TITLE                                =  OUTPUT FROM *             PROGRAM:WRF/CHEM V3.6.1 MODEL
+START_DATE                           = 2013-02-15_00:00:00
+SIMULATION_START_DATE                = 2013-02-15_00:00:00
+WEST_EAST_GRID_DIMENSION             = 220
+SOUTH_NORTH_GRID_DIMENSION           = 271
+BOTTOM_TOP_GRID_DIMENSION            = 51
+DX                                   = 3000
+DY                                   = 3000
+STOCH_FORCE_OPT                      = 0
+GRIDTYPE                             = C
+DIFF_OPT                             = 1
+KM_OPT                               = 4
+DAMP_OPT                             = 3
+DAMPCOEF                             = 0.2
+KHDIF                                = 0
+KVDIF                                = 0
+MP_PHYSICS                           = 8
+RA_LW_PHYSICS                        = 1
+RA_SW_PHYSICS                        = 1
+SF_SFCLAY_PHYSICS                    = 5
+SF_SURFACE_PHYSICS                   = 2
+BL_PBL_PHYSICS                       = 5
+CU_PHYSICS                           = 0
+SF_LAKE_PHYSICS                      = 0
+SURFACE_INPUT_SOURCE                 = 1
+SST_UPDATE                           = 1
+GRID_FDDA                            = 0
+GFDDA_INTERVAL_M                     = 0
+GFDDA_END_H                          = 0
+GRID_SFDDA                           = 0
+SGFDDA_INTERVAL_M                    = 0
+SGFDDA_END_H                         = 0
+HYPSOMETRIC_OPT                      = 2
+SF_URBAN_PHYSICS                     = 0
+SHCU_PHYSICS                         = 0
+MFSHCONV                             = 0
+FEEDBACK                             = 0
+SMOOTH_OPTION                        = 0
+SWRAD_SCAT                           = 1
+W_DAMPING                            = 0
+DT                                   = 10
+RADT                                 = 15
+BLDT                                 = 0
+CUDT                                 = 0
+AER_OPT                              = 0
+SWINT_OPT                            = 0
+AER_TYPE                             = 1
+AER_AOD550_OPT                       = 1
+AER_ANGEXP_OPT                       = 1
+AER_SSA_OPT                          = 1
+AER_ASY_OPT                          = 1
+AER_AOD550_VAL                       = 0.12
+AER_ANGEXP_VAL                       = 1.3
+AER_SSA_VAL                          = 1.4013e-45
+AER_ASY_VAL                          = 1.4013e-45
+MOIST_ADV_OPT                        = 1
+SCALAR_ADV_OPT                       = 1
+TKE_ADV_OPT                          = 1
+DIFF_6TH_OPT                         = 2
+DIFF_6TH_FACTOR                      = 0.12
+OBS_NUDGE_OPT                        = 0
+BUCKET_MM                            = -1
+BUCKET_J                             = -1
+PREC_ACC_DT                          = 0
+SF_OCEAN_PHYSICS                     = 0
+ISFTCFLX                             = 0
+ISHALLOW                             = 0
+ISFFLX                               = 1
+ICLOUD                               = 1
+ICLOUD_CU                            = 0
+TRACER_PBLMIX                        = 1
+SCALAR_PBLMIX                        = 0
+GRAV_SETTLING                        = 0
+DFI_OPT                              = 0
+WEST_EAST_PATCH_START_UNSTAG         = 1
+WEST_EAST_PATCH_END_UNSTAG           = 219
+WEST_EAST_PATCH_START_STAG           = 1
+WEST_EAST_PATCH_END_STAG             = 220
+SOUTH_NORTH_PATCH_START_UNSTAG       = 1
+SOUTH_NORTH_PATCH_END_UNSTAG         = 270
+SOUTH_NORTH_PATCH_START_STAG         = 1
+SOUTH_NORTH_PATCH_END_STAG           = 271
+BOTTOM_TOP_PATCH_START_UNSTAG        = 1
+BOTTOM_TOP_PATCH_END_UNSTAG          = 50
+BOTTOM_TOP_PATCH_START_STAG          = 1
+BOTTOM_TOP_PATCH_END_STAG            = 51
+GRID_ID                              = 2
+PARENT_ID                            = 1
+I_PARENT_START                       = 72
+J_PARENT_START                       = 82
+PARENT_GRID_RATIO                    = 3
+CEN_LAT                              = 39.3983
+CEN_LON                              = -87.9423
+TRUELAT1                             = 30
+TRUELAT2                             = 60
+MOAD_CEN_LAT                         = 39.19
+STAND_LON                            = -88
+POLE_LAT                             = 90
+POLE_LON                             = 0
+GMT                                  = 0
+JULYR                                = 2013
+JULDAY                               = 46
+MAP_PROJ                             = 1
+MAP_PROJ_CHAR                        = Lambert Conformal
+MMINLU                               = USGS
+NUM_LAND_CAT                         = 24
+ISWATER                              = 16
+ISLAKE                               = -1
+ISICE                                = 24
+ISURBAN                              = 1
+ISOILWATER                           = 14
+
+--- eta levels (ZNW, 51 levels) of d02 ---
+1.0000 0.9975 0.9937 0.9884 0.9821 0.9758 0.9695 0.9632 0.9568 0.9505 0.9442 0.9368 0.9295 0.9221 0.9147 0.9074 0.9000 0.8926 0.8853 0.8779 0.8705 0.8632 0.8558 0.8474 0.8389 0.8263 0.8084 0.7895 0.7684 0.7474 0.7211 0.6947 0.6579 0.6211 0.5842 0.5474 0.5105 0.4737 0.4337 0.3895 0.3463 0.3053 0.2674 0.2326 0.2000 0.1684 0.1389 0.1105 0.0758 0.0368 0.0000
+
+==== Per-run values of the attributes that differ between runs (d02) ====
+
+run            SIMULATION_START       START_DATE             nfiles   first d02 file                 last d02 file                 
+WRF_021613     2013-02-15_00:00:00    2013-02-15_00:00:00    49       wrfout_d02_2013-02-15_00_00_00 wrfout_d02_2013-02-17_00_00_00
+WRF_022414     2014-02-23_00:00:00    2014-02-23_00:00:00    49       wrfout_d02_2014-02-23_00_00_00 wrfout_d02_2014-02-25_00_00_00
+WRF_022916     2016-02-28_00:00:00    2016-02-28_00:00:00    49       wrfout_d02_2016-02-28_00_00_00 wrfout_d02_2016-03-01_00_00_00
+WRF_030111     2011-02-28_00:00:00    2011-02-28_00:00:00    49       wrfout_d02_2011-02-28_00_00_00 wrfout_d02_2011-03-02_00_00_00
+WRF_030516     2016-03-03_00:00:00    2016-03-03_00:00:00    121      wrfout_d02_2016-03-03_00_00_00 wrfout_d02_2016-03-08_00_00_00
+WRF_031413     2013-03-13_00:00:00    2013-03-13_00:00:00    49       wrfout_d02_2013-03-13_00_00_00 wrfout_d02_2013-03-15_00_00_00
+WRF_031816     2016-03-16_00:00:00    2016-03-16_00:00:00    73       wrfout_d02_2016-03-16_00_00_00 wrfout_d02_2016-03-19_00_00_00
+WRF_031913     2013-03-18_00:00:00    2013-03-18_00:00:00    49       wrfout_d02_2013-03-18_00_00_00 wrfout_d02_2013-03-20_00_00_00
+WRF_042911     2011-04-28_00:00:00    2011-04-28_00:00:00    49       wrfout_d02_2011-04-28_00_00_00 wrfout_d02_2011-04-30_00_00_00
+WRF_060111     2011-05-31_00:00:00    2011-05-31_00:00:00    49       wrfout_d02_2011-05-31_00_00_00 wrfout_d02_2011-06-02_00_00_00
+WRF_060612     2012-06-05_00:00:00    2012-06-05_00:00:00    49       wrfout_d02_2012-06-05_00_00_00 wrfout_d02_2012-06-07_00_00_00
+WRF_061514     2014-06-14_00:00:00    2014-06-14_00:00:00    49       wrfout_d02_2014-06-14_00_00_00 wrfout_d02_2014-06-16_00_00_00
+WRF_061714     2014-06-14_00:00:00    2014-06-14_00:00:00    48       wrfout_d02_2014-06-16_01_00_00 wrfout_d02_2014-06-18_00_00_00
+WRF_063011     2011-06-29_00:00:00    2011-06-29_00:00:00    49       wrfout_d02_2011-06-29_00_00_00 wrfout_d02_2011-07-01_00_00_00
+WRF_070615     2015-07-05_00:00:00    2015-07-05_00:00:00    49       wrfout_d02_2015-07-05_00_00_00 wrfout_d02_2015-07-07_00_00_00
+WRF_071211     2011-07-11_00:00:00    2011-07-11_00:00:00    49       wrfout_d02_2011-07-11_00_00_00 wrfout_d02_2011-07-13_00_00_00
+WRF_071415     2015-07-13_00:00:00    2015-07-13_00:00:00    49       wrfout_d02_2015-07-13_00_00_00 wrfout_d02_2015-07-15_00_00_00
+WRF_072015     2015-07-19_00:00:00    2015-07-19_00:00:00    49       wrfout_d02_2015-07-19_00_00_00 wrfout_d02_2015-07-21_00_00_00
+WRF_072514     2014-07-24_00:00:00    2014-07-24_00:00:00    49       wrfout_d02_2014-07-24_00_00_00 wrfout_d02_2014-07-26_00_00_00
+WRF_081115     2015-08-10_00:00:00    2015-08-10_00:00:00    49       wrfout_d02_2015-08-10_00_00_00 wrfout_d02_2015-08-12_00_00_00
+WRF_081413     2013-08-13_00:00:00    2013-08-13_00:00:00    49       wrfout_d02_2013-08-13_00_00_00 wrfout_d02_2013-08-15_00_00_00
+WRF_081414     2014-08-13_00:00:00    2014-08-13_00:00:00    49       wrfout_d02_2014-08-13_00_00_00 wrfout_d02_2014-08-15_00_00_00
+WRF_081811     2011-08-17_00:00:00    2011-08-17_00:00:00    49       wrfout_d02_2011-08-17_00_00_00 wrfout_d02_2011-08-19_00_00_00
+WRF_082015     2015-08-19_00:00:00    2015-08-19_00:00:00    49       wrfout_d02_2015-08-19_00_00_00 wrfout_d02_2015-08-21_00_00_00
+WRF_082515     2015-08-24_00:00:00    2015-08-24_00:00:00    49       wrfout_d02_2015-08-24_00_00_00 wrfout_d02_2015-08-26_00_00_00
+WRF_090215     2015-09-01_00:00:00    2015-09-01_00:00:00    49       wrfout_d02_2015-09-01_00_00_00 wrfout_d02_2015-09-03_00_00_00
+WRF_100312     2012-10-03_00:00:00    2012-10-03_00:00:00    49       wrfout_d02_2012-10-03_00_00_00 wrfout_d02_2012-10-05_00_00_00
+WRF_110713     2013-11-06_00:00:00    2013-11-06_00:00:00    49       wrfout_d02_2013-11-06_00_00_00 wrfout_d02_2013-11-08_00_00_00
+WRF_110812     2012-11-07_00:00:00    2012-11-07_00:00:00    49       wrfout_d02_2012-11-07_00_00_00 wrfout_d02_2012-11-09_00_00_00
+WRF_111314     2014-11-09_00:00:00    2014-11-09_00:00:00    267      wrfout_d02_2014-11-09_00_00_00 wrfout_d02_2014-11-22_00_00_00
+WRF_112514     2014-11-24_00:00:00    2014-11-24_00:00:00    49       wrfout_d02_2014-11-24_00_00_00 wrfout_d02_2014-11-26_00_00_00
+WRF_120114     2014-11-30_00:00:00    2014-11-30_00:00:00    97       wrfout_d02_2014-11-30_00_00_00 wrfout_d02_2014-12-04_00_00_00
+WRF_121812     2012-12-17_00:00:00    2012-12-17_00:00:00    49       wrfout_d02_2012-12-17_00_00_00 wrfout_d02_2012-12-19_00_00_00
+
+Attributes that differ between runs: START_DATE, SIMULATION_START_DATE, DT, JULYR, JULDAY
+NOTE: these physics/grid options differ between runs: DT
+
+DT per run (d01 / d02):
+  WRF_021613     30 / 10
+  WRF_022414     30 / 10
+  WRF_022916     40 / 13.3333
+  WRF_030111     40 / 13.3333
+  WRF_030516     40 / 13.3333
+  WRF_031413     40 / 13.3333
+  WRF_031816     30 / 10
+  WRF_031913     30 / 10
+  WRF_042911     30 / 10
+  WRF_060111     25 / 8.3333
+  WRF_060612     30 / 10
+  WRF_061514     20 / 6.6667
+  WRF_061714     20 / 6.6667
+  WRF_063011     25 / 8.3333
+  WRF_070615     30 / 10
+  WRF_071211     10 / 3.3333
+  WRF_071415     30 / 10
+  WRF_072015     30 / 10
+  WRF_072514     30 / 10
+  WRF_081115     30 / 10
+  WRF_081413     30 / 10
+  WRF_081414     30 / 10
+  WRF_081811     30 / 6.6667
+  WRF_082015     30 / 10
+  WRF_082515     30 / 10
+  WRF_090215     30 / 10
+  WRF_100312     30 / 10
+  WRF_110713     30 / 10
+  WRF_110812     30 / 10
+  WRF_111314     40 / 13.3333
+  WRF_112514     40 / 13.3333
+  WRF_120114     40 / 13.3333
+  WRF_121812     30 / 10

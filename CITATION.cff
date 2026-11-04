@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+message: "If you use this code or these data, please cite both the paper and this archive."
+title: "INFLUX aircraft mass balance analysis: code and per-transect results"
+version: "1.0"
+date-released: "2026-11-03"
+repository-code: "https://github.com/nikob8/INFLUX-aircraft-mass-balance"
+license: MIT
+authors:
+  - family-names: Balashov
+    given-names: Nikolay
+    affiliation: "Earth System Science Interdisciplinary Center, University of Maryland; NASA Global Modeling and Assimilation Office"
+  - family-names: Barkley
+    given-names: Zachary R.
+    affiliation: "The Pennsylvania State University"
+  - family-names: Davis
+    given-names: Kenneth J.
+    affiliation: "The Pennsylvania State University"
+  - family-names: Shepson
+    given-names: Paul
+    affiliation: "Stony Brook University"
+keywords:
+  - methane
+  - aircraft mass balance
+  - urban emissions
+  - Indianapolis
+  - INFLUX
+preferred-citation:
+  type: article
+  title: "Evaluation of aircraft-based methane emissions estimates and estimation methodologies with six years of data from Indianapolis"
+  journal: "Journal of Geophysical Research: Atmospheres"
+  year: 2026
+  authors:
+    - family-names: Balashov
+      given-names: Nikolay
+    - family-names: Barkley
+      given-names: Zachary R.
+    - family-names: Davis
+      given-names: Kenneth J.
+    - family-names: Shepson
+      given-names: Paul
