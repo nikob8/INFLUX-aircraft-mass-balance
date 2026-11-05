@@ -7,12 +7,12 @@
 %  with Flag > 0 counts; the day value is the mean of its transects; the error
 %  bar is std(...,1) of the transects; red = only one transect that day.
 %  New: with APPLY_COS = true each transect flux is multiplied by cos(theta) of
-%  its transect (from All_Solutions.mat), so the figure matches Table S1 v3.
+%  its transect (from All_Solutions.mat), so the figure matches Table S1 (v5).
 
 clear; close all; clc;
 
 %% ------------------------------------------------------------ settings
-LF_DIR    = '/storage/group/zrb5027/default/INFLUX/zrb5027/INFLUXMassBalance/Landfill';
+LF_DIR    = fullfile(pwd, 'Landfill');       % Loop files written by MassBalanceLandfill.m (same layout as the original Landfill folder)
 SOL_FILE  = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/revision_codes/revis_oct26/MassB/All_Solutions.mat';   % from Collect_Solutions.m
 APPLY_COS = true;
 outName   = 'Fig9_SSLF_daily';

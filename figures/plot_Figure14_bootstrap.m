@@ -1,7 +1,7 @@
 %% plot_Figure14_bootstrap.m
 %  Figure 14: expected standard error of the mean citywide emission rate as a
 %  function of the number of flights, for two sampling pools: all 37 flight
-%  days and the 23 days with a diagnostic ratio above 2 (Section 3.2.2).
+%  days and the 24 days with a diagnostic ratio above 2 (Section 3.2.2).
 %
 %  Method: for n = 2 ... NMAX flights, draw n daily Downwind Edge estimates
 %  with replacement from the pool, compute their mean, repeat NBOOT times and
@@ -12,7 +12,8 @@
 %  the standard error of 5 filtered flights).
 %
 %  Inputs: All_Solutions.mat (daily means of the Downwind Edge transects, with
-%  cos theta) and Diag4.mat (diagnostic ratio of each flight day).
+%  cos theta) and Diag_ratio.mat (diagnostic ratio of each flight day, written
+%  by analyses/Diagnostic_ratio.m).
 
 clear; close all; clc;
 

@@ -7,10 +7,13 @@
 %                  (was Figure 11 in the submission)
 %
 %  Inputs
-%     TempsAndTimes.mat in INFLUXMassBalance (city) and in INFLUXMassBalance/Landfill
+%     TempsAndTimes.mat in INFLUXMassBalance (one row per flight day)
 %        TimeMatrix(:,1) old flux, TimeMatrix(:,2) day number
 %        TempMatrix(:,1) old flux, TempMatrix(:,2) takeoff temperature (deg F)
 %        Only the day numbers and temperatures are used; the fluxes are replaced.
+%        The takeoff temperature of a flight day is the same for the city and
+%        the landfill, so this one file serves both figures (the older copy in
+%        INFLUXMassBalance/Landfill reflects an earlier plume selection).
 %     All_Solutions.mat (cos theta Edge fluxes), Landfill/<Date>_Loop<k>.mat
 %
 %  The rows of TimeMatrix are matched to flight dates by their day spacing, and
@@ -20,7 +23,8 @@ clear; close all; clc;
 
 %% ------------------------------------------------------------ settings
 MB_ROOT  = '/storage/group/zrb5027/default/INFLUX/zrb5027/INFLUXMassBalance';
-LF_DIR   = fullfile(MB_ROOT, 'Landfill');
+LF_DIR   = fullfile(pwd, 'Landfill');                    % Loop files written by MassBalanceLandfill.m
+TT_FILE  = fullfile(MB_ROOT, 'TempsAndTimes.mat');       % takeoff temperatures and day numbers of all flight days
 SOL_FILE = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/revision_codes/revis_oct26/MassB/All_Solutions.mat';
 FN = 'Arial';
 
@@ -48,15 +52,16 @@ end
 fprintf('%d city days, %d landfill days with cos(theta) fluxes\n', numel(cityFlux), numel(lfFlux));
 
 %% ------------------------------------------------------------ the two figures
-origin = make_trend_figure(fullfile(MB_ROOT, 'TempsAndTimes.mat'), cityDates, cityFlux, ...
+origin = make_trend_figure(TT_FILE, cityDates, cityFlux, ...
     'Citywide CH_4 emission rate (mol s^{-1})', 'FigS1_city_trends', FN, []);
-make_trend_figure(fullfile(LF_DIR, 'TempsAndTimes.mat'), lfDates, lfFlux, ...
+make_trend_figure(TT_FILE, lfDates, lfFlux, ...
     'SSLF CH_4 emission rate (mol s^{-1})', 'Fig10_SSLF_trends', FN, origin);
 
 
 %% ============================================================ one figure
 function origin = make_trend_figure(matFile, dateList, newFlux, ylab, outName, FN, origin)
 % origin = datenum of day number 0 in TimeMatrix(:,2); [] = derive it here
+sameKind = isempty(origin);          % the old fluxes in the file are the city fluxes: compare only in the city call
 M = load(matFile);
 TimeMatrix = M.TimeMatrix; TempMatrix = M.TempMatrix;
 n = size(TimeMatrix, 1);
@@ -80,10 +85,11 @@ if isempty(origin)                     % derive from this file: rows and dates b
 else                                   % convert day numbers with the known origin, match by date
     rowDate = dayNum + origin;
     keep = false(n,1); matched = NaN(n,1);
-    for i = 1:n
+    for i = 1:n                        % exact date match: the rows are the flight days themselves
         [dmin, j] = min(abs(dn - rowDate(i)));
-        if dmin <= 2, keep(i) = true; matched(i) = j; end
+        if dmin <= 0.5, keep(i) = true; matched(i) = j; end
     end
+    assert(numel(unique(matched(keep))) == nnz(keep), 'a flight day was matched to more than one row of %s', matFile);
     fprintf('\n%s: %d of %d rows matched to the %d flight days with fluxes\n', outName, nnz(keep), n, numel(dn));
     if any(~keep)
         fprintf('  rows with no matching flight day (dropped): %s\n', strjoin(cellstr(datestr(rowDate(~keep), 'yyyy-mm-dd'))', ' '));
@@ -95,7 +101,7 @@ else                                   % convert day numbers with the known orig
     rowDate = rowDate(keep); tempC = tempC(keep); oldFlux = oldFlux(keep);
     dn = dn(matched(keep)); newFlux = newFlux(matched(keep)); n = nnz(keep);
 end
-fprintf('  mean |old - new| flux = %.1f mol/s (n = %d)\n', mean(abs(oldFlux - newFlux)), n);
+if sameKind, fprintf('  mean |old - new| flux = %.1f mol/s (n = %d)\n', mean(abs(oldFlux - newFlux)), n); end
 
 x1 = datetime(dn, 'ConvertFrom', 'datenum'); y = newFlux(:);
 yrs = years(x1 - x1(1));

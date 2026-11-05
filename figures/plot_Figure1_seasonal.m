@@ -4,46 +4,28 @@
 %    (b) wind rose of the mean (mass balance) wind direction on each flight
 %        day, stacked by mean wind speed
 %
-%  Reads Indy_Mass_Balance_Table_withWD.xlsx (sheet FlightMasterSheet):
-%    column A  date rows 'yyyy/mm/dd'
-%    column E  Mean Flight Wind Speed (m/s)
-%    column P  Mean Flight Wind Direction (deg, direction the wind blows FROM)
-%  The wind-direction column is found by its header, so it can move.
+%  Reads Indy_Mass_Balance_Table_v5.csv (Table S1, folder data/ of the repository;
+%  one row per downwind transect). The mean wind speed and direction of the
+%  flight day (the mass balance wind, identical on every transect row of the
+%  day) are taken from the first row of each date.
 %
 %  The wind rose is drawn with patches on ordinary axes (no polaraxes), so the
 %  speed classes can be stacked and the look is the same in any MATLAB version.
-%  Base MATLAB only (R2019a+ for readcell).
+%  Base MATLAB only (R2019b+ for readtable with TextType).
 %
 %  Expected: seasons DJF/MAM/JJA/SON = 5/8/13/11 flights;
 %            wind speed <5 / 5-10 / >10 m/s = 13/16/8 days.
 
 clear; clc;
-xlsFile = 'Indy_Mass_Balance_Table_withWD.xlsx';
+csvFile = 'Indy_Mass_Balance_Table_v5.csv';
 outName = 'Fig1_flights_season_windrose';
 
 %% ------------------------------------------------------------ read
-C   = readcell(xlsFile, 'Sheet', 'FlightMasterSheet');
-hdr = C(1,:);
-isTxt = @(h) ischar(h) || isstring(h);
-wdCol = find(cellfun(@(h) isTxt(h) && ~isempty(regexpi(char(h), 'wind\s*direction', 'once')), hdr), 1);
-wsCol = find(cellfun(@(h) isTxt(h) && ~isempty(regexpi(char(h), 'wind\s*speed',     'once')), hdr), 1);
-assert(~isempty(wdCol), 'No "Wind Direction" column found in %s', xlsFile);
-assert(~isempty(wsCol), 'No "Wind Speed" column found in %s', xlsFile);
-
-dates = datetime.empty(0,1); wdir = []; wspd = [];
-for r = 2:size(C,1)
-    lab = C{r,1};
-    if isa(lab,'datetime')
-        dt = lab;
-    elseif isTxt(lab) && ~isempty(regexp(strtrim(char(lab)), '^\d{4}/\d{2}/\d{2}$', 'once'))
-        dt = datetime(strtrim(char(lab)), 'InputFormat', 'yyyy/MM/dd');
-    else
-        continue
-    end
-    dates(end+1,1) = dt;                     %#ok<SAGROW>
-    wdir(end+1,1)  = toNum(C{r, wdCol});     %#ok<SAGROW>
-    wspd(end+1,1)  = toNum(C{r, wsCol});     %#ok<SAGROW>
-end
+T = readtable(csvFile, 'TextType', 'string');
+if ~isdatetime(T.Date), T.Date = datetime(T.Date, 'InputFormat', 'yyyy-MM-dd'); end
+[dates, iFirst] = unique(T.Date, 'stable');          % one row per flight day
+wspd = T.Mean_wind_speed_ms(iFirst);                 % daily mean wind (same on every transect row)
+wdir = T.Mean_wind_direction_deg(iFirst);
 nF = numel(dates);
 fprintf('Found %d flight days (%s to %s); %d with wind direction\n', nF, ...
     datestr(min(dates),'yyyy-mm-dd'), datestr(max(dates),'yyyy-mm-dd'), nnz(~isnan(wdir)));
@@ -138,11 +120,3 @@ set(fig, 'PaperPositionMode','auto');
 print(fig, [outName '.png'], '-dpng', '-r300');
 print(fig, [outName '.eps'], '-depsc');
 fprintf('Saved %s.png / .eps\n', outName);
-
-%% ------------------------------------------------------------ helper
-function v = toNum(x)
-    if isnumeric(x) && isscalar(x), v = double(x);
-    elseif ischar(x) || isstring(x), v = str2double(strtrim(char(x)));
-    else, v = NaN;
-    end
-end

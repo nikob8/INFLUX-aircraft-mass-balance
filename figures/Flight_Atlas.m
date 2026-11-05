@@ -7,11 +7,11 @@
 %     (d) table of per-transect fluxes for the four methods and the day means
 %     (e...) one panel per downwind transect: CH4 along the transect (km along
 %         the flight track, origin and sign convention as in Figure 2) with the
-%         four backgrounds: Edge (blue), Upwind (orange), Adjusted ABL Upwind
-%         (green), Upwind Edge (purple); the part of the transect directly
+%         four backgrounds: Downwind Edge (blue), Upwind (orange), Adjusted ABL
+%         Upwind (green), Upwind Edge (purple); the part of the transect directly
 %         downwind of Marion County is shaded.
 %
-%  Backgrounds are rebuilt with the same code as the Method scripts (Edge as in
+%  Backgrounds are rebuilt with the same code as the Method scripts (Downwind Edge as in
 %  MassBalanceMethodA.m / plot_Figure2_Edge.m, Upwind as in MassBalanceMethodB.m /
 %  plot_Figure3_5_Upwind.m).  The Adjusted ABL Upwind and Upwind Edge lines are
 %  the Upwind line times the per-transect factors stored by Methods C and D.
@@ -218,6 +218,20 @@ if ~isempty(SA) && isfield(SA,'CosTheta')
 end
 text(ax, 0, 1, strjoin(lines_, newline), 'FontName','FixedWidth', 'FontSize', 9, 'VerticalAlignment','top', 'Interpreter','none');
 title(ax, '(d) Flux by method (mol s^{-1})', 'FontSize', 10);
+% one legend per page for the transect panels, drawn here with a fixed location
+% (a legend placed with 'best' inside an invisible tiled figure can end up outside its panel)
+hold(ax, 'on');
+hl = gobjects(1, 6);
+hl(1) = plot(ax, NaN, NaN, 'k-', 'LineWidth', 1.4);
+hl(2) = plot(ax, NaN, NaN, '-', 'Color', col.A, 'LineWidth', 1.3);
+hl(3) = plot(ax, NaN, NaN, '-', 'Color', col.B, 'LineWidth', 1.1);
+hl(4) = plot(ax, NaN, NaN, '-', 'Color', col.C, 'LineWidth', 1.1);
+hl(5) = plot(ax, NaN, NaN, '-', 'Color', col.D, 'LineWidth', 1.1);
+hl(6) = patch(ax, [NaN NaN NaN], [NaN NaN NaN], [0.93 0.93 0.93], 'EdgeColor', 'none');
+lab = [{'aircraft CH_4'}, names, {'directly downwind of Marion County'}];
+keepL = [true true hasUp hasUp hasUp true];
+legend(ax, hl(keepL), lab(keepL), 'Location', 'south', 'FontSize', 8, 'NumColumns', 2, 'Box', 'on');
+xlim(ax, [0 1]); ylim(ax, [0 1]);
 
 % (e...) transects
 letters = 'efghijklmnopqrstuvwxyz';
@@ -237,12 +251,12 @@ for k = 1:nT
     plot(ax, s, y, 'k-', 'LineWidth', 1.4);
     xlim(ax, [min(s) max(s)]); ylim(ax, yl); set(ax, 'FontSize', 9);
     xlabel(ax, 'Distance along flight track (km)'); if mod(k-1,4) == 0, ylabel(ax, 'CH_4 (ppb)'); end
-    txt = sprintf('%s %s', names{1}, n0(fl(k,1)));
-    for q = 2:4, if ~isnan(fl(k,q)), txt = sprintf('%s, %s %s', txt, names{q}, n0(fl(k,q))); end, end
-    title(ax, {sprintf('(%s) T%d  %s UTC  %.0f m AGL', letters(k), k, hhmm(tr(k).t), tr(k).z), [txt ' mol s^{-1}']}, 'FontSize', 9);
-    if k == 1
-        ok = isgraphics(h); legend(ax, h(ok), names(ok), 'Location','best', 'FontSize', 8);
+    if any(~isnan(fl(k,2:4)))          % abbreviations as in the column headers of table (d)
+        txt = sprintf('DwEdge %s, Upwind %s, AdjABL %s, UpEdge %s mol s^{-1}', n0(fl(k,1)), n0(fl(k,2)), n0(fl(k,3)), n0(fl(k,4)));
+    else
+        txt = sprintf('%s %s mol s^{-1}', names{1}, n0(fl(k,1)));
     end
+    title(ax, {sprintf('(%s) T%d  %s UTC  %.0f m AGL', letters(k), k, hhmm(tr(k).t), tr(k).z), txt}, 'FontSize', 9);
 end
 
 %% ---- save
