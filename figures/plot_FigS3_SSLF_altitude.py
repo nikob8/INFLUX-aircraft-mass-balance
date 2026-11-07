@@ -11,6 +11,8 @@ Three panels, built from Table S1 (one row per downwind transect):
       without a plume (mean +/- SE), with a rank-sum p-value
   (c) fraction of all transects with a quantified plume, binned by transect
       height over ABL height, with 95% Wilson intervals and a logistic fit
+The script also prints (d): the citywide Downwind Edge emission rate on the
+transects with and without a quantified plume of the same days (Section 3.1.3).
 
 Input (same folder): Indy_Mass_Balance_Table_v5.csv
 Output: FigS3_SSLF_altitude.png and the statistics printed.
@@ -47,6 +49,20 @@ b = t[t.Date.isin(mixed)]
 hd, hn = b.h_dev[b.det], b.h_dev[~b.det]
 pb = stats.mannwhitneyu(hd, hn, alternative='two-sided').pvalue
 print(f'(b) {len(mixed)} days; with plume mean {hd.mean():+.0f} m (n = {len(hd)}), without {hn.mean():+.0f} m (n = {len(hn)}); difference {hn.mean()-hd.mean():.0f} m; rank-sum p = {pb:.1e}')
+
+# ---- (d) is the landfill CH4 missing on the transects without a quantified plume?
+#      Citywide Downwind Edge emission rate on the same days, transects without minus with a
+#      quantified plume (mean over days of the within-day difference, t-based 95% interval).
+#      If the landfill plume were absent from those transects, the difference would be close
+#      to minus the SSLF emission rate.
+dd = np.array([s.Flux_DownwindEdge_mols[~s.det].mean() - s.Flux_DownwindEdge_mols[s.det].mean() for _, s in b.groupby('Date')])
+f_with = np.mean([s.Flux_DownwindEdge_mols[s.det].mean() for _, s in b.groupby('Date')])
+f_without = np.mean([s.Flux_DownwindEdge_mols[~s.det].mean() for _, s in b.groupby('Date')])
+f_lf = b.groupby('Date').Flux_Landfill_mols.mean().mean()
+se_d = dd.std(ddof=1) / np.sqrt(len(dd)); tq = stats.t.ppf(0.975, len(dd) - 1)
+print(f'(d) citywide Downwind Edge flux on the same {len(dd)} days: {f_with:.1f} mol/s on transects with a quantified plume, '
+      f'{f_without:.1f} without; mean within-day difference {dd.mean():+.1f} mol/s (95% CI {dd.mean() - tq*se_d:+.1f} to '
+      f'{dd.mean() + tq*se_d:+.1f}); SSLF emission rate on these days {f_lf:.1f} mol/s')
 
 # ---- (c) detection fraction vs z/zi
 edges = [0, 0.25, 0.5, 0.75, 1.0, 1.5]

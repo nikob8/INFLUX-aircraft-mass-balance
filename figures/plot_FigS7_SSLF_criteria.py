@@ -58,6 +58,17 @@ for name, mask in (('quantified by the analysts', man), ('not quantified', ~man)
           f'SNR median {np.median(snr[mask]):.1f} (10th pct {np.percentile(snr[mask], 10):.1f}), '
           f'FWHM median {np.median(fw[mask]):.1f} km (90th pct {np.percentile(fw[mask], 90):.1f})')
 
+# fitted spike on the transects without a quantified plume, relative to the quantified transects of the same day
+from scipy import stats
+rat = []
+for day, s_ in d.groupby('Date'):
+    m_ = s_.det_manual.astype(bool)
+    if m_.any() and (~m_).any():
+        rat.append(s_.A_ppb[~m_].mean() / s_.A_ppb[m_].mean())
+rat = np.array(rat)
+print(f'same-day amplitude ratio, not quantified / quantified: median {np.median(rat):.2f} over {len(rat)} days, '
+      f'smaller on {np.sum(rat < 1)} days, Wilcoxon p = {stats.wilcoxon(np.log(rat)).pvalue:.3f}')
+
 print('\nTable S2: n detected / agreement / daily mean +/- 2 SE (days), amplitude threshold 10 ppb')
 for s in (4, 5, 7, 8):
     row = []
