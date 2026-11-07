@@ -11,21 +11,29 @@
 %                         method used for the reported value. If it is missing, EPA.mat
 %                         (variables a = HH-6 and b = HH-8, 2011 to 2023, mol/s; the file of
 %                         the original figure) is read instead and the csv is written from it.
-%  Output: Fig11_SSLF_comparison.png (300 dpi) and .pdf; the annual means are printed.
+%    Barkley2026_SSLF_annual.csv  (data/ folder of the repository) annual SSLF emission
+%                         rates of Barkley et al. (2026, their Figure 5) from the tower closest
+%                         to the landfill (Tower 10), 2017 to 2024: mean and full range of
+%                         their sensitivity analysis, kg CH4/h. If it is missing,
+%                         TowerLandfillForNikolay.mat (Year; Landfill = [min mean max], kg/h)
+%                         is read instead and the csv is written from it.
+%  Output: Fig11_SSLF_comparison.png (300 dpi) and .pdf; the values drawn are printed.
 %
 %  Published values drawn in the figure:
-%    Barkley et al. (2026), tower network observations 2013 to 2024: 1,476 kg/h from all
-%        towers, 1,330 to 1,760 kg/h across towers and sensitivity tests.
+%    Barkley et al. (2026): the annual tower estimates above, 2017 to YEAR_MAX. Their
+%        all-tower estimate (1,476 kg/h; 1,330 to 1,760 kg/h across towers and sensitivity
+%        tests) is quoted in the text of Section 3.1.3 and not drawn.
 %    Nesser et al. (2024), TROPOMI, 2019: 77 mol/s, ensemble range 64 to 103 mol/s.
-%  Annual means are shown with 2 sigma = 2 standard errors of the daily values of that year.
-%  Uses base MATLAB only (no toolboxes).
+%  Annual means of this study are shown with 2 sigma = 2 standard errors of the daily
+%  values of that year. Uses base MATLAB only (no toolboxes).
 
 clear; close all; clc;
 
+YEAR_MAX = 2019;        % last year shown: the years closest to the flights (the tower
+                        % record runs to 2024 and the EPA values to 2023; 2024 shows them all)
 K = 16.04*3.6;                              % 1 mol/s of CH4 = 57.74 kg/h
 YEARS_EPA = (2011:2023)';
 REP_HH6 = [2011 2016];  REP_HH8 = [2016 2023];   % method of the reported GHGRP value (as in the original figure)
-BARK = struct('mean', 1476/K, 'lo', 1330/K, 'hi', 1760/K, 't0', 2013, 't1', 2024);
 NESS = struct('year', 2019, 'mean', 77, 'lo', 64, 'hi', 103);
 
 C_STUDY = [0.122 0.306 0.612];  C_BARK = [0.482 0.196 0.580];  C_NESS = [0.878 0.510 0.078];
@@ -44,6 +52,7 @@ fprintf('Font used for all text: %s (%s)\n', FONT, ternary(UNI, 'Unicode sub/sup
 if isfile('EPA_SSLF_GHGRP.csv')
     E = readtable('EPA_SSLF_GHGRP.csv');
     yrs = E.Year(:);  hh6 = E.HH6_mols(:);  hh8 = E.HH8_mols(:);
+    if iscell(yrs), yrs = str2double(yrs); end
 else
     assert(isfile('EPA.mat'), 'EPA_SSLF_GHGRP.csv (or EPA.mat) not found in this folder');
     S = load('EPA.mat');                     % a = HH-6, b = HH-8, 2011 to 2023 (mol/s)
@@ -52,6 +61,26 @@ else
     rep = repmat({'HH-8'}, numel(yrs), 1);  rep(yrs < REP_HH8(1)) = {'HH-6'};
     writetable(table(yrs, hh6, hh8, rep, 'VariableNames', {'Year', 'HH6_mols', 'HH8_mols', 'Reported_method'}), 'EPA_SSLF_GHGRP.csv');
     fprintf('wrote EPA_SSLF_GHGRP.csv from EPA.mat (add it to the data/ folder of the repository)\n');
+end
+
+%% ------------------------------------------------------------ Barkley et al. (2026), annual tower estimates
+if isfile('Barkley2026_SSLF_annual.csv')
+    B = readtable('Barkley2026_SSLF_annual.csv');
+    byr = B.Year(:);  bkg = [B.Min_kgh(:) B.Mean_kgh(:) B.Max_kgh(:)];
+    if iscell(byr), byr = str2double(byr); end
+elseif isfile('TowerLandfillForNikolay.mat')
+    S = load('TowerLandfillForNikolay.mat');            % Year (n x 1); Landfill (n x 3: min, mean, max; kg CH4/h)
+    byr = double(S.Year(:));  bkg = double(S.Landfill);
+    writetable(table(byr, bkg(:,1), bkg(:,2), bkg(:,3), 'VariableNames', {'Year', 'Min_kgh', 'Mean_kgh', 'Max_kgh'}), ...
+        'Barkley2026_SSLF_annual.csv');
+    fprintf('wrote Barkley2026_SSLF_annual.csv from TowerLandfillForNikolay.mat (add it to the data/ folder of the repository)\n');
+else
+    error('Barkley2026_SSLF_annual.csv (or TowerLandfillForNikolay.mat) not found: copy it from the data/ folder of the repository.');
+end
+kb = byr <= YEAR_MAX;
+bmol = bkg/K;                                             % mol/s: min, mean, max
+for k = find(kb(:))'
+    fprintf('Barkley et al. (2026), %d: %.0f kg/h = %.1f mol/s (range %.1f to %.1f)\n', byr(k), bkg(k,2), bmol(k,2), bmol(k,1), bmol(k,3));
 end
 
 %% ------------------------------------------------------------ this study
@@ -82,19 +111,20 @@ end
 keepY = n > 0;  Y = Y(keepY);  m = m(keepY);  se2 = se2(keepY);  n = n(keepY);
 
 %% ------------------------------------------------------------ figure
+XL = [2010.4 YEAR_MAX+0.6];
 fig = figure('Color', 'w', 'Units', 'pixels', 'Position', [80 80 900 560]);
 ax = axes('Parent', fig, 'Position', [0.09 0.11 0.80 0.84]);
 hold(ax, 'on');
-% Barkley et al. (2026): band = range across towers and sensitivity tests, line = all-tower estimate
-hBand = patch(ax, [BARK.t0 BARK.t1 BARK.t1 BARK.t0], [BARK.lo BARK.lo BARK.hi BARK.hi], C_BARK, 'EdgeColor', 'none', 'FaceAlpha', 0.16);
-plot(ax, [BARK.t0 BARK.t1], [BARK.mean BARK.mean], '-', 'Color', C_BARK, 'LineWidth', 2.2);
-hB = patch(ax, NaN(1,4), NaN(1,4), C_BARK, 'FaceAlpha', 0.16, 'EdgeColor', C_BARK, 'LineWidth', 2);   % legend entry (band + line)
 % EPA GHGRP: black underlay = method used for the reported value
-k6 = yrs >= REP_HH6(1) & yrs <= REP_HH6(2);  k8 = yrs >= REP_HH8(1) & yrs <= REP_HH8(2);
+ke = yrs <= YEAR_MAX;
+k6 = ke & yrs >= REP_HH6(1) & yrs <= REP_HH6(2);  k8 = ke & yrs >= REP_HH8(1) & yrs <= REP_HH8(2);
 hR = plot(ax, yrs(k6), hh6(k6), '-', 'Color', [0 0 0], 'LineWidth', 7.5);
 plot(ax, yrs(k8), hh8(k8), '-', 'Color', [0 0 0], 'LineWidth', 7.5);
-h6 = plot(ax, yrs, hh6, '-', 'Color', C_HH6, 'LineWidth', 2.6);
-h8 = plot(ax, yrs, hh8, '-', 'Color', C_HH8, 'LineWidth', 2.6);
+h6 = plot(ax, yrs(ke), hh6(ke), '-', 'Color', C_HH6, 'LineWidth', 2.6);
+h8 = plot(ax, yrs(ke), hh8(ke), '-', 'Color', C_HH8, 'LineWidth', 2.6);
+% Barkley et al. (2026): annual estimates from Tower 10, bars = full range of their sensitivity analysis
+hB = errorbar(ax, byr(kb), bmol(kb,2), bmol(kb,2) - bmol(kb,1), bmol(kb,3) - bmol(kb,2), 's', 'Color', C_BARK, ...
+    'MarkerFaceColor', C_BARK, 'MarkerEdgeColor', [0 0 0], 'MarkerSize', 8, 'LineWidth', 2, 'CapSize', 8);
 % Nesser et al. (2024) and this study
 hN = errorbar(ax, NESS.year, NESS.mean, NESS.mean - NESS.lo, NESS.hi - NESS.mean, 'o', 'Color', C_NESS, ...
     'MarkerFaceColor', C_NESS, 'MarkerEdgeColor', [0 0 0], 'MarkerSize', 8, 'LineWidth', 2, 'CapSize', 8);
@@ -105,16 +135,16 @@ for k = 1:numel(Y)
     text(ax, Y(k), 2.5, sprintf('n = %d', n(k)), 'HorizontalAlignment', 'center', 'VerticalAlignment', 'bottom', ...
         'FontSize', FS-2, 'Color', [0.35 0.35 0.35]);
 end
-uistack(hBand, 'bottom');
-set(ax, 'XLim', [2010.4 2024.6], 'YLim', [0 110], 'XTick', 2011:2024, 'FontSize', FS, 'TickDir', 'out', 'Box', 'off', 'Layer', 'top');
-xl = arrayfun(@(y) sprintf('%d', y), 2011:2024, 'UniformOutput', false);  xl(2:2:end) = {''};
+set(ax, 'XLim', XL, 'YLim', [0 110], 'XTick', 2011:YEAR_MAX, 'FontSize', FS, 'TickDir', 'out', 'Box', 'off', 'Layer', 'top');
+xl = arrayfun(@(y) sprintf('%d', y), 2011:YEAR_MAX, 'UniformOutput', false);
+if YEAR_MAX - 2011 > 9, xl(2:2:end) = {''}; end         % label every other year on a long axis
 set(ax, 'XTickLabel', xl, 'YGrid', 'on', 'GridAlpha', 0.15);
 ylabel(ax, ['SSLF emission rate (mol' sPerS ')'], 'Interpreter', INT, 'FontSize', FS+1);
 % right axis in kg CH4 per hour
 ax2 = axes('Parent', fig, 'Position', get(ax, 'Position'), 'Color', 'none', 'YAxisLocation', 'right', ...
     'XAxisLocation', 'top', 'XTick', [], 'XColor', 'none', 'YLim', get(ax, 'YLim')*K, 'FontSize', FS, 'TickDir', 'out', 'Box', 'off');
 ylabel(ax2, ['SSLF emission rate (kg ' sCH4 sPerH ')'], 'Interpreter', INT, 'FontSize', FS+1);
-line(ax, [2010.4 2024.6], [110 110], 'Color', [0 0 0], 'LineWidth', 0.5);      % close the frame at the top
+line(ax, XL, [110 110], 'Color', [0 0 0], 'LineWidth', 0.5);      % close the frame at the top
 lg = legend(ax, [hS hB hN h6 h8 hR], {'This study (aircraft mass balance)', 'Barkley et al. (2026), tower network', ...
     'Nesser et al. (2024), TROPOMI', 'EPA GHGRP, Equation HH-6', 'EPA GHGRP, Equation HH-8', 'EPA reported value'}, ...
     'Location', 'northwest', 'FontSize', FS-1, 'Interpreter', 'none');
