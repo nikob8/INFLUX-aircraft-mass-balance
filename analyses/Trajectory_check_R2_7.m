@@ -28,7 +28,7 @@
 %  Inputs (the same files the Method scripts use)
 %     FlightList.mat, LegAndProfileList/<Date>.mat, INFLUX_<Date>
 %     <Date>/Solution-MethodA.mat and Solution-MethodD.mat   (your MassB folder)
-%     wrfout_d02_* files, found with the same lookup as Figure7_v4.m
+%     wrfout_d02_* files, found with the same lookup as plot_Figure7_WRF.m
 %  Outputs (in Traj_results/)
 %     <Date>.mat                    per-transect results of one day
 %     Trajectory_check_legs.csv     one row per transect, all numbers
@@ -374,7 +374,7 @@ zi = interp1(D.ProfileTime, D.ABLHeight, t);
 end
 
 function fn = find_wrfout(wrfRoot, dom, yyyy, mm, dd, hh)
-    % same lookup as Figure7_v4.m, with the file list indexed once
+    % same lookup as plot_Figure7_WRF.m, with the file list indexed once
     persistent keys names root
     if isempty(keys) || ~strcmp(root, wrfRoot)
         root = wrfRoot; keys = {}; names = {};

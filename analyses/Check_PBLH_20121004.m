@@ -1,7 +1,7 @@
 %% Check_PBLH_20121004.m  (optional, for R2.9)
 %  Modeled boundary layer height at the Marion County centre on 10/04/2012,
 %  hour by hour, from the WRF-Chem run used for the diagnostic ratio.  Uses the
-%  same wrfout lookup as Figure7_v4.m.  Prints PBLH (WRF's own diagnostic) and,
+%  same wrfout lookup as plot_Figure7_WRF.m.  Prints PBLH (WRF's own diagnostic) and,
 %  as a second opinion, the height where the modeled potential temperature
 %  first exceeds its 100 m value by 1 K.
 

@@ -28,7 +28,7 @@ If you use this code or these data, please cite the paper and the Zenodo archive
 | 2 | `plot_Figure2_Edge.m` (+ `alongTrackKm.m`) | aircraft data of 10/04/2012; flux labels from `data/Indy_Mass_Balance_Table_v5.csv` |
 | 3, 5 | `plot_Figure3_5_Upwind.m` | aircraft data, Solution files of 10/04/2012 |
 | 4 | `plot_Figure4_profiles.m` | aircraft data, `ElevationData.nc` |
-| 7 | `Figure7_v4.m` | WRF-Chem output, colocated model and aircraft data of 03/01/2011 |
+| 7 | `plot_Figure7_WRF.m` | WRF-Chem output, colocated model and aircraft data of 03/01/2011 (`Colocated_20110301.mat`) |
 | 8 | `plot_Figure8_altitude.m` | `All_Solutions.mat` |
 | 9 | `plot_Figure9_SSLF.m` | landfill results (`Landfill/<date>_Loop<k>.mat`, from `MassBalanceLandfill.m`), `All_Solutions.mat` |
 | 10, S1 | `plot_FigS1_Fig10_trends.m` | `TempsAndTimes.mat`, `All_Solutions.mat`, landfill results |
