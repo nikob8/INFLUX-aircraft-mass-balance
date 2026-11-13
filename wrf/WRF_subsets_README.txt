@@ -2,7 +2,7 @@ WRF-Chem fields for the INFLUX aircraft mass balance flights, 2011 to 2016
 ==========================================================================
 
 Companion data set of
-  Balashov, N., Barkley, Z. R., Davis, K. J., and Shepson, P. (2026). Evaluation of
+  Balashov, N. V., Barkley, Z. R., Davis, K. J., and Shepson, P. B. (2026). Evaluation of
   aircraft-based methane emissions estimates and estimation methodologies with six
   years of data from Indianapolis. Journal of Geophysical Research: Atmospheres.
 Analysis code: https://github.com/nikob8/INFLUX-aircraft-mass-balance
@@ -30,7 +30,9 @@ model, no cumulus parameterization on the 3 km domain. Each simulation started a
 emissions of the regional source categories of the EPA gridded inventory
 (Maasakkers et al., 2016): 1 oil and gas, 2 coal, 3 agriculture, 4 landfills,
 5 other, and of Marion County (Lamb et al., 2016): tracers 6 to 8. Every tracer
-starts from a 300 ppb initial and boundary value.
+starts from, and is held at the domain boundaries to, a constant value (300 in the
+raw model output, in which the emissions are scaled by 10^6); the TRACER variable
+below therefore holds the enhancement in ppb, (tracer - 300)/10^6.
 
 What each file contains
 -----------------------

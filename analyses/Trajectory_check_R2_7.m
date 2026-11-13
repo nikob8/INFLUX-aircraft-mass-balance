@@ -55,7 +55,7 @@ P.DT       = 30;                  % trajectory time step (s)
 P.TMAX     = 8*3600;              % longest back trajectory (s); 8 h so that the slow-wind days reach the upwind transect
 P.BOX_KM   = 160;                 % half-width of the WRF sub-domain kept in memory (km)
 P.HOMOG_KM = 50;                  % radius for the spatial homogeneity of the modelled wind (R2.8)
-P.EXAMPLE_DATE = '20110301';  P.EXAMPLE_HOUR = 17.33;   % transect drawn in the figure (the Figure 2 transect)
+P.EXAMPLE_DATE = '20110301';  P.EXAMPLE_HOUR = 17.33;   % transect drawn in Figure S6 (the transect of Figure 7)
 START_AT  = 1;  SKIP_DONE = true;  % SKIP_DONE = true reuses Traj_results/<Date>.mat from an earlier run (only the summary and the figure are remade)
 FN = 'Arial';
 

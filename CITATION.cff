@@ -7,7 +7,7 @@ repository-code: "https://github.com/nikob8/INFLUX-aircraft-mass-balance"
 license: MIT
 authors:
   - family-names: Balashov
-    given-names: Nikolay
+    given-names: Nikolay V.
     affiliation: "Earth System Science Interdisciplinary Center, University of Maryland; NASA Global Modeling and Assimilation Office"
   - family-names: Barkley
     given-names: Zachary R.
@@ -16,8 +16,8 @@ authors:
     given-names: Kenneth J.
     affiliation: "The Pennsylvania State University"
   - family-names: Shepson
-    given-names: Paul
-    affiliation: "Stony Brook University"
+    given-names: Paul B.
+    affiliation: "School of Marine, Atmospheric, and Sustainability Sciences, Stony Brook University"
 keywords:
   - methane
   - aircraft mass balance
@@ -31,10 +31,10 @@ preferred-citation:
   year: 2026
   authors:
     - family-names: Balashov
-      given-names: Nikolay
+      given-names: Nikolay V.
     - family-names: Barkley
       given-names: Zachary R.
     - family-names: Davis
       given-names: Kenneth J.
     - family-names: Shepson
-      given-names: Paul
+      given-names: Paul B.
