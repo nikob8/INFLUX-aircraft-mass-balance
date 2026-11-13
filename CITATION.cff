@@ -1,23 +1,22 @@
 cff-version: 1.2.0
 message: "If you use this code or these data, please cite both the paper and this archive."
 title: "INFLUX aircraft mass balance analysis: code and per-transect results"
+abstract: >-
+  MATLAB and Python scripts and per-transect results for the aircraft mass balance analysis of methane
+  emissions from Indianapolis (Marion County, Indiana) with 37 flights of the Indianapolis Flux Experiment
+  (INFLUX), 2011 to 2016. The scripts compute the emission rates with four definitions of the background
+  (Downwind Edge, Upwind, Adjusted ABL Upwind, Upwind Edge) and the emission rates of the South Side Landfill,
+  run the sensitivity analyses of the Supporting Information, and draw the figures of the paper.
+  The data folder holds Table S1 and Data Sets S1 to S4 of the paper. The README describes the
+  inputs each script needs and the order in which to run them.
 version: "1.0"
-date-released: "2026-11-03"
 repository-code: "https://github.com/nikob8/INFLUX-aircraft-mass-balance"
 license: MIT
 authors:
   - family-names: Balashov
     given-names: Nikolay V.
+    orcid: "https://orcid.org/0000-0002-2933-4712"
     affiliation: "Earth System Science Interdisciplinary Center, University of Maryland; NASA Global Modeling and Assimilation Office"
-  - family-names: Barkley
-    given-names: Zachary R.
-    affiliation: "The Pennsylvania State University"
-  - family-names: Davis
-    given-names: Kenneth J.
-    affiliation: "The Pennsylvania State University"
-  - family-names: Shepson
-    given-names: Paul B.
-    affiliation: "School of Marine, Atmospheric, and Sustainability Sciences, Stony Brook University"
 keywords:
   - methane
   - aircraft mass balance

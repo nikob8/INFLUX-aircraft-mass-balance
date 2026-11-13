@@ -423,6 +423,7 @@ function s = circ_std_deg(d)
     if numel(d) < 2, s = NaN; return; end
     R = hypot(mean(sind(d)), mean(cosd(d)));
     s = rad2deg(sqrt(-2*log(max(R,1e-9))));
+end
 
 function s = hhmmss(sec)
     if isnan(sec), s = '  --  '; return; end
