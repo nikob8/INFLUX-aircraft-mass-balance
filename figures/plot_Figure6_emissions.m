@@ -10,7 +10,8 @@
 %    Emissions9km/INFLUX_<sector>9, Emissions3km/INFLUX_<sector>3,
 %    ThomasEmissions/ThomasGas, ThomasTrash (landfill), ThomasWastewater.
 %  In panel (c) the landfill file is multiplied by 1.4 and the wastewater file divided
-%  by 3.5, as in the figure of the paper.
+%  by 3.5, as in the simulations (an adjustment toward the estimates of Lamb et al., 2016;
+%  the Marion County totals are then 56, 28 and 2 mol/s for gas, landfill and wastewater).
 %  Optional: Indianapolis_Interstate_Mileposts.shp (roads of panel c, not in the repository).
 %  Needs the Mapping Toolbox; clim needs MATLAB R2022a or later (caxis in older versions).
 %  Output: INFLUX_emissions_log10_turbo.png

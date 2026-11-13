@@ -6,7 +6,7 @@ Companion data set of
   aircraft-based methane emissions estimates and estimation methodologies with six
   years of data from Indianapolis. Journal of Geophysical Research: Atmospheres.
 Analysis code: https://github.com/nikob8/INFLUX-aircraft-mass-balance
-(archived at Zenodo; the DOI is given in the Open Research section of the paper)
+(version 1.0 archived at https://doi.org/10.5281/zenodo.24184834)
 
 Contents
 --------
@@ -29,7 +29,10 @@ model, no cumulus parameterization on the 3 km domain. Each simulation started a
 00 UTC on the day before the flight (24 h of spin-up). Eight CH4 tracers carry the
 emissions of the regional source categories of the EPA gridded inventory
 (Maasakkers et al., 2016): 1 oil and gas, 2 coal, 3 agriculture, 4 landfills,
-5 other, and of Marion County (Lamb et al., 2016): tracers 6 to 8. Every tracer
+5 other, and of Marion County (Lamb et al., 2016): 6 natural gas distribution,
+7 landfill, 8 wastewater treatment (the landfill emission multiplied by 1.4 and the
+wastewater emission divided by 3.5, toward the estimates of that study: 56, 28 and
+2 mol/s in total). Every tracer
 starts from, and is held at the domain boundaries to, a constant value (300 in the
 raw model output, in which the emissions are scaled by 10^6); the TRACER variable
 below therefore holds the enhancement in ppb, (tracer - 300)/10^6.
