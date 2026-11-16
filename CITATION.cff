@@ -7,8 +7,9 @@ abstract: >-
   (INFLUX), 2011 to 2016. The scripts compute the emission rates with four definitions of the background
   (Downwind Edge, Upwind, Adjusted ABL Upwind, Upwind Edge) and the emission rates of the South Side Landfill,
   run the sensitivity analyses of the Supporting Information, and draw the figures of the paper.
-  The data folder holds Table S1 and Data Sets S1 to S4 of the paper. The README describes the
-  inputs each script needs and the order in which to run them.
+  The data folder holds Table S1 and Data Sets S1 to S4 of the paper; the folders input and results
+  hold the auxiliary files the scripts read and the published results of the mass balance scripts.
+  The README describes the inputs each script needs and the order in which to run them.
 version: "1.1"
 repository-code: "https://github.com/nikob8/INFLUX-aircraft-mass-balance"
 license: MIT

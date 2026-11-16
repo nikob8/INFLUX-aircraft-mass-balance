@@ -3,20 +3,22 @@
 against the mean ABL height of the downwind transects, the mean wind speed and
 the mean wind direction of the flight day (Section 3.1.1 of the paper).
 
-Inputs (same folder):
+Inputs (folder data/ of the repository):
     Indy_Mass_Balance_Table.csv   per-transect results (Table S1)
     diagnostic_ratios.csv            diagnostic ratio of each flight day (Section 3.2)
 Output: FigS4_flux_vs_meteorology.png and the correlation statistics printed.
 Requires numpy, pandas, scipy, matplotlib.
 """
+import os
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')   # folder data/ of the repository
 import numpy as np, pandas as pd
 from scipy import stats
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-t = pd.read_csv('Indy_Mass_Balance_Table.csv')
-r = pd.read_csv('diagnostic_ratios.csv')
+t = pd.read_csv(os.path.join(DATA, 'Indy_Mass_Balance_Table.csv'))
+r = pd.read_csv(os.path.join(DATA, 'diagnostic_ratios.csv'))
 day = (t.groupby('Date')
          .agg(A=('Flux_DownwindEdge_mols', 'mean'), UE=('Flux_UpwindEdge_mols', 'mean'),
               zi=('ABL_height_m', 'mean'), ws=('Mean_wind_speed_ms', 'first'), wd=('Mean_wind_direction_deg', 'first'))

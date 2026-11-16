@@ -1,28 +1,28 @@
 %% plot_Figure13_diagnostic.m
-%  Revised Figure 13 (Figure 14 in the submission): diagnostic ratio vs. the
-%  Edge emission rate for the 37 flight days, coloured by mean wind speed.
-%  Reviewer 1 (R1.13): the region below the threshold ratio is shaded and the
-%  mean and standard deviation of the two subsets are drawn (bands on either
-%  side of the threshold) and printed; the overall mean is a dashed line.
+%  Figure 13: diagnostic ratio vs. the Downwind Edge emission rate for the 37
+%  flight days, coloured by mean wind speed.  The region below the threshold
+%  ratio is shaded and the mean and standard deviation of the two subsets are
+%  drawn (bands on either side of the threshold) and printed; the overall mean
+%  is a dashed line.
 %
-%  Ratios and wind speeds: Diag4.mat (Diag_All2: wind speed, wind direction,
-%  diagnostic ratio, Edge flux of the submission, yyyymmdd).
+%  Ratios and wind speeds: Diag_ratio.mat (Diag_All2: wind speed, wind direction,
+%  diagnostic ratio, daily Downwind Edge emission rate, yyyymmdd).
 %  Emission rates: daily means of the Edge transects WITH cos(theta), read from
-%  All_Solutions.mat, so the figure matches Table S1 v3.  The script prints the
+%  All_Solutions.mat, so the figure matches Table S1.  The script prints the
 %  numbers for Table 3 (all / good / good with wind filter / bad).
 
 clear; close all; clc;
 
 %% ------------------------------------------------------------ settings
-DIAG_FILE = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/revision_codes/revis_oct26/WRF/Diag_ratio.mat';   % written by analyses/Diagnostic_ratio.m (same layout as the old Diag4.mat)
-SOL_FILE  = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/revision_codes/revis_oct26/MassB/All_Solutions.mat';
+DIAG_FILE = fullfile('..','results','Diag_ratio.mat');      % written by analyses/Diagnostic_ratio.m
+SOL_FILE  = fullfile('..','results','All_Solutions.mat');   % written by mass_balance/Collect_Solutions.m
 THRESH    = 2;          % diagnostic ratio threshold
 WIND_MIN  = 3;          % m/s, wind filter used in Table 3
 outName   = 'Fig13_diagnostic_ratio';
 FN = 'Arial';
 
 %% ------------------------------------------------------------ data
-assert(isfile(DIAG_FILE), 'Diag4.mat not found at %s (fix DIAG_FILE)', DIAG_FILE);
+assert(isfile(DIAG_FILE), 'Diag_ratio.mat not found at %s (fix DIAG_FILE)', DIAG_FILE);
 assert(isfile(SOL_FILE),  'All_Solutions.mat not found at %s (fix SOL_FILE)', SOL_FILE);
 D = load(DIAG_FILE); D = D.Diag_All2;
 ws = D(:,1); ratio = D(:,3); fluxOld = D(:,4);
@@ -34,7 +34,7 @@ for i = 1:numel(dates)
     assert(~isempty(k), 'No Solution-MethodA for %s in All_Solutions.mat', dates{i});
     flux(i) = mean(SolA(k).Flux);                       % daily mean of the Edge transects, with cos(theta)
 end
-fprintf('Daily Edge means with cos(theta); largest change from the submitted values: %.1f mol/s\n', max(abs(flux - fluxOld)));
+fprintf('Daily Downwind Edge means from All_Solutions.mat; largest difference from the values stored in Diag_ratio.mat: %.1f mol/s\n', max(abs(flux - fluxOld)));
 
 good = ratio > THRESH;  bad = ~good;  gw = good & ws >= WIND_MIN;
 st = @(v) [numel(v) mean(v) std(v) std(v)/sqrt(numel(v))];

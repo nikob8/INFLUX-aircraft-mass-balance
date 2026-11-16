@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Figure S7: objective characterization of the SSLF plume selection (Text S3).
 
-Input (same folder): SSLF_plume_criteria.csv, written by analyses/SSLF_plume_criteria.m,
+Input (folder data/ of the repository): SSLF_plume_criteria.csv, written by analyses/SSLF_plume_criteria.m,
     one row per downwind transect with the best-fit Gaussian spike near the projected
     position of the SSLF (amplitude A_ppb above the polynomial background, signal-to-noise
     ratio SNR = A / rms residual of the fit, full width at half maximum fwhm_km, measured
@@ -14,6 +14,8 @@ The detection is recomputed here from the fitted quantities with the thresholds 
 (those of Text S3), so the script does not depend on the det_alg column of the file.
 Requires numpy, pandas, matplotlib.
 """
+import os
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')   # folder data/ of the repository
 import numpy as np, pandas as pd
 import matplotlib
 matplotlib.use('Agg')
@@ -22,7 +24,7 @@ import matplotlib.pyplot as plt
 PMIN, SNRMIN, FWMAX = 10.0, 7.0, 10.0          # amplitude (ppb), signal-to-noise ratio, width (km)
 RELAXED = (5.0, 4.0, 15.0)                       # permissive set quoted in Text S3
 
-d = pd.read_csv('SSLF_plume_criteria.csv')
+d = pd.read_csv(os.path.join(DATA, 'SSLF_plume_criteria.csv'))
 man = d.det_manual.astype(bool).values
 A, snr, fw, P = d.A_ppb.values, d.SNR.values, d.fwhm_km.values, d.P_ppb.values
 fa, fm = d.Flux_alg_mols.values, d.Flux_manual_mols.values

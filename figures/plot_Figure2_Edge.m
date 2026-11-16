@@ -19,7 +19,8 @@
 %     one sans-serif font everywhere (the old figure mixed serif and sans), no
 %     overall title (date and time are in the panel title and the caption)
 %
-%  Needs on the path: INFLUX_<Date>, LegAndProfileList/<Date>.mat, InterX.m,
+%  Needs (folders in the settings block; run the script from its own folder, figures/):
+%  INFLUX_<Date>, LegAndProfileList/<Date>.mat, InterX.m,
 %  alongTrackKm.m, PlotINFLUX.m or the interstate shapefile (optional, roads),
 %  Landfill/<Date>_Loop<k>.mat (optional), <Date>/Solution-MethodA.mat (optional),
 %  Indy_Mass_Balance_Table.csv (optional; data/ folder of the repository).
@@ -31,12 +32,12 @@ clear; close all; clc;
 %% ------------------------------------------------------------ settings
 Date    = '20121004';
 LegLoop = 1;                                  % first downwind transect
-MB_ROOT = '/storage/group/zrb5027/default/INFLUX/zrb5027/INFLUXMassBalance';
-OBS_DIR = fullfile(MB_ROOT,'AircraftObs');    % folder with INFLUX_<Date>  (change if elsewhere)
-ROADS_CODE = '/storage/work/zrb5027/WRFGUI_V3/Code';                         % has PlotINFLUX.m (Zach)
-ROADS_SHP  = '/storage/work/nvb5011/INFLUX_Paper_2/Thomas_2016/Shapefiles';  % Indianapolis_Interstate_Mileposts.shp
-SOL_ROOT   = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/revision_codes/revis_oct26/MassB';   % <Date>/Solution-MethodA.mat
-TABLE_S1   = 'Indy_Mass_Balance_Table.csv';   % flux labels are taken from Table S1 when this file is found
+MB_ROOT = fullfile('..','input','MassBalance');        % LegAndProfileList/
+OBS_DIR = fullfile('..','input','aircraft');           % aircraft files INFLUX_<yyyymmdd> (not in the repository, see README)
+ROADS_CODE = fullfile('..','input','helpers');         % PlotINFLUX.m (draws the roads), InterX.m (see README)
+ROADS_SHP  = fullfile('..','input','shapefiles');      % Indianapolis_Interstate_Mileposts.shp
+SOL_ROOT   = fullfile('..','results');                 % <Date>/Solution-MethodA.mat, Landfill/<Date>_Loop<k>.mat
+TABLE_S1   = fullfile('..','data','Indy_Mass_Balance_Table.csv');   % flux labels are taken from Table S1 when this file is found
 if isfolder(MB_ROOT), addpath(MB_ROOT); end
 if isfolder(OBS_DIR), addpath(OBS_DIR); end
 if isfolder(ROADS_CODE), addpath(ROADS_CODE); end
@@ -46,7 +47,7 @@ outName = sprintf('Fig2_Edge_%s_T%d', Date, LegLoop);
 SSLF_LATLON = [39.714691162109375, -86.205429077148438];   % South Side Landfill
 PEAK_WIN_KM = 6;        % search for the landfill peak within this distance of the SSLF crossing
 SMOOTH_PTS  = 15;       % extra smoothing used ONLY to find the plume edge minima
-FLUX_CITY_TABLE = 50.23;   % Table S1 v5, 10/04/2012 transect 1 (used if the csv is not found)
+FLUX_CITY_TABLE = 50.23;   % Table S1, 10/04/2012 transect 1 (used if the csv is not found)
 FLUX_LF_TABLE   = 31.67;
 
 % colours and font
@@ -228,7 +229,7 @@ if mm == 60, hh = hh + 1; mm = 0; end
 fprintf('%s T%d: %02d:%02d UTC, wind %.0f deg / %.1f m/s, background points %d + %d, downwind %d\n', ...
     Date, LegLoop, hh, mm, MeanWDIR, MeanWSPD, numel(bgIdx1), numel(bgIdx2), numel(Downwind));
 
-%% ------------------------------------------------------------ landfill plume (as before)
+%% ------------------------------------------------------------ landfill plume
 % (1) where does the SSLF project onto this transect along the mean wind?
 PC = [SSLF_LATLON(1)+MeanV, SSLF_LATLON(2)+MeanU*(111/86)];
 PA = [SSLF_LATLON(1)-MeanV, SSLF_LATLON(2)-MeanU*(111/86)];
@@ -237,7 +238,7 @@ XLF = flipud(InterX(LineLF, Line2))';                  % [lat lon]
 lfI = [];  lfSource = 'none';
 
 % (2) edge indices saved by the landfill script, if the Loop file has them
-lfFile = fullfile(MB_ROOT, 'Landfill', sprintf('%s_Loop%d.mat', Date, LegLoop));
+lfFile = fullfile(SOL_ROOT, 'Landfill', sprintf('%s_Loop%d.mat', Date, LegLoop));
 if isfile(lfFile)
     L = load(lfFile);  fn = fieldnames(L);
     for q = 1:numel(fn)                                 % a 2-element index pair inside this leg?
@@ -458,8 +459,8 @@ function fix_map_labels(ax, font, fs)
 end
 
 function draw_roads(ax, col, keep)
-% Major Indianapolis highways. Uses Zach's PlotINFLUX.m (the routine
-% behind the submitted figures) if it is on the path; otherwise draws the
+% Major Indianapolis highways. Uses PlotINFLUX.m (Z. Barkley, the routine of
+% the Method scripts) if it is on the path; otherwise draws the
 % interstates from Indianapolis_Interstate_Mileposts.shp (Indiana State Plane
 % East, US survey feet). Line and patch objects drawn so far (apart from the map frame,
 % the grid, and KEEP) are set to COL; PlotINFLUX draws its roads with markers, which

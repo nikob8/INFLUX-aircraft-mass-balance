@@ -13,7 +13,7 @@ function [s, e] = alongTrackKm(lat, lon, latO, lonO, orient)
 %                 extent of the leg decides.
 %
 %   The transect is projected onto its own principal axis (PCA on the track
-%   in km, as in Compare_WRF_Obs_v5), so the result is distance ALONG the
+%   in km), so the result is distance ALONG the
 %   flight track rather than a longitude or latitude difference.  s = 0 at
 %   the origin.  Returned e is the unit vector of the axis [east north].
 %

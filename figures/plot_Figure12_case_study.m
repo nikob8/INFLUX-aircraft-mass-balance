@@ -1,17 +1,18 @@
 %% plot_Figure12_case_study.m
-%  Revised Figure 12 (Figure 13 in the submission): WRF-Chem CH4 enhancement
-%  maps for 11/19/2014 at 16, 17 and 18 UTC (top) and model vs. aircraft along
-%  the contemporaneous flight segments (bottom).
+%  Figure 12: WRF-Chem CH4 enhancement maps for 11/19/2014 at 16, 17 and 18 UTC
+%  (top) and model vs. aircraft along the contemporaneous flight segments
+%  (bottom).
 %
-%  Changes from CoalMineCase_6panel_hours (the submitted figure):
-%    R1.12  colour scale and lower panels in ppb instead of ppm
-%    R2.21  coal mine locations (triangles), latitude/longitude grid with
-%           labels, and a 100 km scale bar on the maps
-%    R1.6   lower panels keep UTC hour on the bottom axis (the segments are
-%           closed loops, so time is the natural coordinate) and gain a top
-%           axis with the distance flown along the track in km
-%  Everything else (data files, model sampling at the aircraft positions, the
-%  constant offset dx applied to the observations) is unchanged.
+%  The maps show the coal mine locations (triangles), a latitude/longitude grid
+%  with labels and a 100 km scale bar; the colour scale and the lower panels are
+%  in ppb.  The lower panels keep UTC hour on the bottom axis (the segments are
+%  closed loops, so time is the natural coordinate) and have a top axis with the
+%  distance flown along the track in km.  The model is sampled at the aircraft
+%  positions, and a constant offset dx is applied to the observations.
+%
+%  Inputs: input/WRF_20141119/ (model fields and aircraft data of the three
+%  hours) and input/shapefiles/ of the repository.  Run the script from its own
+%  folder (figures/).
 %
 %  Mine coordinates: GHGRP / Global Energy Monitor (Sugar Camp = MC#1, Hamilton
 %  County Coal No. 1, Pond Creek = Mach #1, New Era and New Future at Galatia,
@@ -19,11 +20,10 @@
 
 clear; close all
 
-addpath('/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/UserSaveData/2014-11-19')
-addpath('/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/Code')
-addpath('/storage/work/nvb5011/INFLUX_Paper_2/Thomas_2016/Shapefiles')
+addpath(fullfile('..','input','WRF_20141119'))   % model maps and time series of 11/19/2014 (.mat)
+addpath(fullfile('..','input','shapefiles'))     % Marion_County_Boundary.shp, Indianapolis_Interstate_Mileposts.shp
 
-dx = -0.010;                      % ppm offset applied to the observations (as before)
+dx = -0.010;                      % ppm offset applied to the observations
 PPB = 1000;                       % ppm -> ppb
 CMAX = 80;                        % colour scale top (ppb); was 0.08 ppm
 YL  = [40 90];                    % lower panels (ppb); was [0.04 0.09] ppm
@@ -110,14 +110,14 @@ for k = 1:3
         end
     end
 
-    % latitude / longitude grid with labels (R2.21)
+    % latitude / longitude grid with labels
     setm(gca, 'Grid','on', 'GLineStyle',':', 'GColor',[0.25 0.25 0.25], 'GLineWidth',0.5, ...
          'MLineLocation',2, 'PLineLocation',1, ...
          'MeridianLabel','on', 'ParallelLabel','on', 'MLabelLocation',2, 'PLabelLocation',1, ...
          'MLabelParallel','south', 'PLabelMeridian','west', 'LabelFormat','compass', 'FontSize',8, ...
          'Frame','on', 'FEdgeColor','k', 'FLineWidth',1.0);
 
-    % 100 km scale bar (R2.21), bottom right of each map
+    % 100 km scale bar, bottom right of each map
     lat0 = 37.35; lon0 = -86.9;
     dlon = 100/(111.32*cosd(lat0));
     plotm([lat0 lat0], [lon0 lon0+dlon], 'k-', 'LineWidth', 3)

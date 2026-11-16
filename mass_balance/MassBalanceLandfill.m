@@ -26,25 +26,26 @@
 %  the user types A = <start index>, B = <end index>, optionally Flag = -1, then
 %  dbcont).  The chosen indices are saved with the results (Start, End), so the
 %  published values can be recomputed without interaction: with REUSE_BOUNDS =
-%  true the script reads Start, End and Flag from the existing Loop files (or
-%  from the released Landfill_transects.csv) and skips the prompt.
+%  true the script reads Start, End and Flag from data/Landfill_transects.csv
+%  (or from existing Loop files, if LF_IN is set) and skips the prompt.
 %
-%  Output: Landfill/<yyyymmdd>_Loop<k>.mat with Flag, Distance, Background,
+%  Output: ../results/Landfill/<yyyymmdd>_Loop<k>.mat with Flag, Distance, Background,
 %  Enhancement, Peak, Flux, CH4LF (the CH4 series of the plume), Start, End.
 
 clear
 close all
 
 %% ------------------------------------------------------------ settings
-MB_ROOT  = '/storage/group/zrb5027/default/INFLUX/zrb5027/INFLUXMassBalance';   % FlightList.mat, LegAndProfileList/
-OBS_DIR  = '/storage/work/zrb5027/WRFGUI_V3/Observations/INFLUX';               % aircraft files INFLUX_<yyyymmdd>
-CODE_DIR = '/storage/work/zrb5027/WRFGUI_V3/Code';                              % InterX.m, ElevationData.nc
-LF_IN    = fullfile(MB_ROOT, 'Landfill');   % existing results (read only): the stored plume end points when REUSE_BOUNDS is true
-LF_OUT   = fullfile(pwd, 'Landfill');       % where the new Loop files are written
-BOUNDS_CSV = '';                % alternative source of the end points: Landfill_transects.csv from Collect_Landfill.m
-REUSE_BOUNDS = true;            % true: take Start/End/Flag from LF_IN (or BOUNDS_CSV), no interaction
+% Run this script from its own folder (mass_balance/).
+MB_ROOT  = fullfile('..','input','MassBalance');   % FlightList.mat, LegAndProfileList/
+OBS_DIR  = fullfile('..','input','aircraft');      % aircraft files INFLUX_<yyyymmdd> (not in the repository, see README)
+CODE_DIR = fullfile('..','input','helpers');       % ElevationData.nc, InterX.m (InterX.m: see README)
+LF_OUT   = fullfile('..','results','Landfill');    % where the Loop files are written
+BOUNDS_CSV = fullfile('..','data','Landfill_transects.csv');   % plume end points of the paper (table written by Collect_Landfill.m)
+LF_IN    = '';                  % optional: folder with existing Loop files (read only); their stored end points are used first
+REUSE_BOUNDS = true;            % true: take Start/End/Flag from LF_IN or BOUNDS_CSV, no interaction
 START_AT = 1;                   % first flight day to process
-SAVE_PROFILE_FIGURES = false;   % profile plots of each day into <yyyymmdd>/Profile<k>.png (as the original)
+SAVE_PROFILE_FIGURES = false;   % profile plots of each day into ../results/<yyyymmdd>/Profile<k>.png (as the original script)
 
 addpath(MB_ROOT); addpath(OBS_DIR); addpath(CODE_DIR);
 assert(~isempty(which('InterX')) && ~isempty(which('ElevationData.nc')), 'InterX.m or ElevationData.nc not on the path (check CODE_DIR)');
@@ -56,7 +57,7 @@ for FlightDateLoop=START_AT:length(FlightList)
     clearvars -except FlightDateLoop FlightList MB_ROOT LF_IN LF_OUT REUSE_BOUNDS bounds SAVE_PROFILE_FIGURES
     Date=FlightList(FlightDateLoop).name;
     Date=Date(1:8);
-    if SAVE_PROFILE_FIGURES && ~isfolder(Date), mkdir(Date); end
+    if SAVE_PROFILE_FIGURES && ~isfolder(['../results/',Date]), mkdir(['../results/',Date]); end
     fprintf('%2d %s\n', FlightDateLoop, Date);
 
 SelfAssignedBackground=0;
@@ -181,7 +182,7 @@ for ProfileLoop=1:size(ProfileList,1)
         plot(ax2,ThetaAveraged,ABLTopLine,'-k','LineWidth',3)
         annotation('textbox', [0.4, 0.15, 0.5, 0.05], 'String', ['ABL Height = ', num2str(ABLTop)]);
         annotation('rectangle', [0.4, 0.15, 0.5, 0.05],'color',[1 1 1]);
-        saveas(f,[Date,'/Profile',num2str(ProfileLoop),'.png'])
+        saveas(f,['../results/',Date,'/Profile',num2str(ProfileLoop),'.png'])
         close(f)
     end
 end

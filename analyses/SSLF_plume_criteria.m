@@ -1,7 +1,7 @@
 %% SSLF_plume_criteria.m
 %  Objective criteria for a "well-defined" South Side Landfill (SSLF) plume
-%  (Reviewer 2, Line 326) and their comparison with the manual selection of
-%  Section 2.4.  Applied to all downwind transects of the 37 flight days.
+%  and their comparison with the manual selection of Section 2.4 (Text S3).
+%  Applied to all downwind transects of the 37 flight days.
 %
 %  Definition.  On each downwind transect the CH4 series (15 s running mean,
 %  as in the landfill mass balance) within WIN_KM of the projected SSLF
@@ -45,20 +45,22 @@
 %  criteria and the analysts differ) and SSLF_criteria_agree.png.
 %
 %  Inputs: FlightList.mat, LegAndProfileList/<Date>.mat, INFLUX_<Date>,
-%  InterX.m, <Date>/Solution-MethodA.mat (mean wind, density, ABL, cos theta
-%  per transect), Landfill/<Date>_Loop<k>.mat (manual plumes: CH4LF series,
-%  used to locate the manual edges on the transect) and
-%  Landfill_transects.csv (manual emission rates).
+%  InterX.m, <Date>/Solution-MethodA.mat of every flight day (mean wind,
+%  density, ABL, cos theta per transect; written by MassBalanceMethodA.m),
+%  Landfill/<Date>_Loop<k>.mat (manual plumes: CH4LF series, used to locate
+%  the manual edges on the transect; written by MassBalanceLandfill.m) and
+%  Landfill_transects.csv (manual emission rates).  Run from this folder
+%  (analyses/).
 
 clear; clc; close all
 
 %% ------------------------------------------------------------ settings
-MB_ROOT  = '/storage/group/zrb5027/default/INFLUX/zrb5027/INFLUXMassBalance';   % FlightList.mat, LegAndProfileList/
-OBS_DIR  = '/storage/work/zrb5027/WRFGUI_V3/Observations/INFLUX';               % INFLUX_<yyyymmdd>
-CODE_DIR = '/storage/work/zrb5027/WRFGUI_V3/Code';                              % InterX.m
-SOL_ROOT = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/revision_codes/revis_oct26/MassB';   % <Date>/Solution-MethodA.mat
-LF_DIR   = fullfile(pwd, 'Landfill');                 % Loop files written by MassBalanceLandfill.m
-LF_CSV   = fullfile(pwd, 'Landfill_transects.csv');   % from Collect_Landfill.m (manual emission rates)
+MB_ROOT  = fullfile('..','input','MassBalance');   % FlightList.mat, LegAndProfileList/
+OBS_DIR  = fullfile('..','input','aircraft');      % aircraft files INFLUX_<yyyymmdd> (not in the repository, see README)
+CODE_DIR = fullfile('..','input','helpers');       % InterX.m (see README)
+SOL_ROOT = fullfile('..','results');               % <Date>/Solution-MethodA.mat
+LF_DIR   = fullfile('..','results','Landfill');    % Loop files written by MassBalanceLandfill.m
+LF_CSV   = fullfile('..','data','Landfill_transects.csv');   % manual emission rates (table written by Collect_Landfill.m)
 OUT_DIR  = pwd;
 SSLF_LATLON = [39.714691162109375, -86.205429077148438];
 prm.W     = 8;              % km: the spike centre is searched within W of the projected SSLF position

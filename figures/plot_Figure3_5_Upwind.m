@@ -21,7 +21,8 @@
 %  so the figure shows the Table S1 numbers.  (If CorrectionFactor2 is missing it
 %  is recomputed here with the Method D formula.)
 %
-%  Needs on the path: INFLUX_<Date>, LegAndProfileList/<Date>.mat, InterX.m,
+%  Needs (folders in the settings block; run the script from its own folder, figures/):
+%  INFLUX_<Date>, LegAndProfileList/<Date>.mat, InterX.m,
 %  alongTrackKm.m, PlotINFLUX.m or the Indianapolis interstate shapefile,
 %  <Date>/Solution-MethodB.mat, -MethodC.mat, -MethodD.mat (in one of SOL_ROOTS),
 %  Indy_Mass_Balance_Table.csv (optional; flux labels from Table S1).
@@ -33,23 +34,23 @@ clear; close all; clc;
 %% ------------------------------------------------------------ settings
 Date    = '20121004';
 LegLoop = 1;                                  % first downwind transect
-MB_ROOT = '/storage/group/zrb5027/default/INFLUX/zrb5027/INFLUXMassBalance';
-OBS_DIR = fullfile(MB_ROOT,'AircraftObs');    % folder with INFLUX_<Date>  (change if elsewhere)
+MB_ROOT = fullfile('..','input','MassBalance');        % LegAndProfileList/
+OBS_DIR = fullfile('..','input','aircraft');           % aircraft files INFLUX_<yyyymmdd> (not in the repository, see README)
 addpath(MB_ROOT); if isfolder(OBS_DIR), addpath(OBS_DIR); end
-ROADS_CODE = '/storage/work/zrb5027/WRFGUI_V3/Code';                         % has PlotINFLUX.m (Zach)
-ROADS_SHP  = '/storage/work/nvb5011/INFLUX_Paper_2/Thomas_2016/Shapefiles';  % Indianapolis_Interstate_Mileposts.shp
+ROADS_CODE = fullfile('..','input','helpers');         % PlotINFLUX.m (draws the roads), InterX.m (see README)
+ROADS_SHP  = fullfile('..','input','shapefiles');      % Indianapolis_Interstate_Mileposts.shp
 if isfolder(ROADS_CODE), addpath(ROADS_CODE); end
 if isfolder(ROADS_SHP),  addpath(ROADS_SHP);  end
 outName3 = sprintf('Fig3_Upwind_%s_T%d', Date, LegLoop);
 outName5 = sprintf('Fig5_UpwindVariants_%s_T%d', Date, LegLoop);
 
 SSLF_LATLON = [39.714691162109375, -86.205429077148438];   % South Side Landfill
-% Folders searched, in this order, for <Date>/Solution-MethodB/C/D.mat: your rerun (MassB,
-% as for Figure 2), the current folder, and Zach's originals in MB_ROOT. The correction
+% Folders searched, in this order, for <Date>/Solution-MethodB/C/D.mat: the results folder
+% of the Method scripts (as for Figure 2) and the current folder. The correction
 % factors do not depend on cos theta, and the flux labels are taken from Table S1 when
-% TABLE_S1 is found, so the originals give the same figure.
-SOL_ROOTS = {'/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/revision_codes/revis_oct26/MassB', pwd, MB_ROOT};
-TABLE_S1  = 'Indy_Mass_Balance_Table.csv';   % data/ folder of the repository (optional)
+% TABLE_S1 is found.
+SOL_ROOTS = {fullfile('..','results'), pwd};
+TABLE_S1  = fullfile('..','data','Indy_Mass_Balance_Table.csv');   % Table S1 (optional)
 SOL_ROOT = '';
 for k = 1:numel(SOL_ROOTS)
     if isfile(fullfile(SOL_ROOTS{k}, Date, 'Solution-MethodC.mat')), SOL_ROOT = SOL_ROOTS{k}; break; end
@@ -462,8 +463,8 @@ function fix_map_labels(ax, font, fs)
 end
 
 function draw_roads(ax, col, keep)
-% Major Indianapolis highways. Uses Zach's PlotINFLUX.m (the routine
-% behind the submitted figures) if it is on the path; otherwise draws the
+% Major Indianapolis highways. Uses PlotINFLUX.m (Z. Barkley, the routine of
+% the Method scripts) if it is on the path; otherwise draws the
 % interstates from Indianapolis_Interstate_Mileposts.shp (Indiana State Plane
 % East, US survey feet). Line and patch objects drawn so far (apart from the map frame,
 % the grid, and KEEP) are set to COL; PlotINFLUX draws its roads with markers, which

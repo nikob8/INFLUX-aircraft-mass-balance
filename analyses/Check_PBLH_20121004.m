@@ -1,4 +1,4 @@
-%% Check_PBLH_20121004.m  (optional, for R2.9)
+%% Check_PBLH_20121004.m
 %  Modeled boundary layer height at the Marion County centre on 10/04/2012,
 %  hour by hour, from the WRF-Chem run used for the diagnostic ratio.  Uses the
 %  same wrfout lookup as plot_Figure7_WRF.m.  Prints PBLH (WRF's own diagnostic) and,
@@ -6,7 +6,7 @@
 %  first exceeds its 100 m value by 1 K.
 
 clear; clc;
-WRF_ROOT = '/storage/group/zrb5027/default/INFLUX/nvb5011/';
+WRF_ROOT = '/path/to/wrfout/';   % SET THIS: folder with the WRF-Chem output (run folders WRF_* with wrfout files; not archived, see README)
 CASE     = '20121004'; DOMAIN = 2; HOURS = 14:21;
 LATC = 39.7806; LONC = -86.1401;
 

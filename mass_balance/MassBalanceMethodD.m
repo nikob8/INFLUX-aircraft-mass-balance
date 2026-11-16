@@ -1,7 +1,11 @@
 clear
 close all
-addpath('/storage/work/zrb5027/WRFGUI_V3/Observations/INFLUX');
-addpath('/storage/work/zrb5027/WRFGUI_V3/Code')
+% Run this script from its own folder (mass_balance/).  It reads its input from ../input/ and
+% writes the results of each flight day to ../results/<yyyymmdd>/ (see the README).
+addpath(fullfile('..','input','MassBalance'));   % FlightList.mat
+addpath(fullfile('..','input','aircraft'));      % aircraft files INFLUX_<yyyymmdd> (not in the repository, see README)
+addpath(fullfile('..','input','helpers'));       % ElevationData.nc, PlotINFLUX.m, InterX.m (InterX.m: see README)
+addpath(fullfile('..','input','shapefiles'));    % interstates drawn by PlotINFLUX.m
 load FlightList
 START_AT=1;   % set to k to resume at flight k (e.g. 4 = 20110630)
 for FlightDateLoop=START_AT:length(FlightList)
@@ -9,12 +13,12 @@ for FlightDateLoop=START_AT:length(FlightList)
     load FlightList
     Date=FlightList(FlightDateLoop).name;
     Date=Date(1:8);
-    mkdir(Date);
+    mkdir(['../results/',Date]);
 
 %Date='20141110';
 SelfAssignedBackground=0;
 BackgroundPercentile=0.2;
-load(['LegAndProfileList/',Date])
+load(['../input/MassBalance/LegAndProfileList/',Date])
 File=['INFLUX_',Date];
 %BottomRight BottomLeft TopLeft TopRight
 CountyCorners=[39.63760423971629, -85.95148383144084; 39.63337385377353, -86.32570560518701; 39.92446141560437, -86.32734193809195; 39.9271330073512, -85.95582253907553];
@@ -164,7 +168,7 @@ if ProfileLoop==1
 Heights2=0:10:5000;
 CH4ProfileOG=interp1(Heights,CH4ProfileOG,Heights2);
 end
-saveas(f,[Date,'/Profile',num2str(ProfileLoop),'.png'])
+saveas(f,['../results/',Date,'/Profile',num2str(ProfileLoop),'.png'])
 close(f)   % free memory: hidden figures were never closed
 end
 
@@ -377,7 +381,7 @@ end
         BackgroundLine(isnan(BackgroundLine)==1)=nanmedian(BackgroundLine);
         %BadSpot=find((DownwindLine-BackgroundLine')<0 & isnan(DownwindLine)==0 & isnan(BackgroundLine')==0);
                 BadSpot=find(isnan(DownwindLine)==0 & isnan(BackgroundLine')==0);
-        TempSpot=round(length(BadSpot)*0.1); %Percentile Adjustment here Zach!
+        TempSpot=round(length(BadSpot)*0.1); %Percentile adjustment
         TempSort1=sort(BackgroundLine(BadSpot));
         TempSort2=sort(DownwindLine(BadSpot));
         CorrectionFactor2(LegLoop)=TempSort2(TempSpot)/TempSort1(TempSpot);
@@ -512,7 +516,7 @@ Enhancement(LegLoop)=DownwindCH4Intp-UpwindCH4Intp;
 Flux(LegLoop)=Density(LegLoop).*MeanWSPD.*CosTheta(LegLoop).*(Enhancement(LegLoop)/1e6).*(Distance(LegLoop)*1000).*DownwindABL(LegLoop);
 annotation('textbox', [0.68, 0.9, 0.15, 0.05], 'String', ['Flux = ', num2str(round(Flux(LegLoop))),' mol/s']);
 annotation('rectangle', [0.68, 0.9, 0.15, 0.05],'color',[1 1 1]);
-saveas(f,[Date,'/','T',num2str(LegLoop),'-MethodD','.png'])
+saveas(f,['../results/',Date,'/','T',num2str(LegLoop),'-MethodD','.png'])
 close(f)   % free memory: hidden figures were never closed
 end
 
@@ -522,7 +526,7 @@ end
 
 Flux=Density.*MeanWSPD.*CosTheta.*(Enhancement/1e6).*(Distance'*1000).*DownwindABL;
 clearvars -except FlightDateLoop CorrectionFactor CorrectionFactor2 Date UpwindMatrix DownwindMatrix DownwindABL LegHeight Distance Enhancement DownwindTime ABLHeight ABLTheta ABLT ABLPressure ProfileTime MeanWSPD MeanWDIR Density Flux CosTheta
-save([Date,'/','Solution-MethodD'])
+save(['../results/',Date,'/','Solution-MethodD'])
 end
 end
 

@@ -2,12 +2,14 @@
 """Figure S5: the diagnostic ratio of each flight day against the mean wind
 direction and the mean wind speed (Section 3.2.3 of the paper).
 
-Inputs (same folder):
+Inputs (folder data/ of the repository):
     Indy_Mass_Balance_Table.csv   per-transect results (Table S1): daily wind
     diagnostic_ratios.csv            diagnostic ratio of each flight day
 Output: FigS5_ratio_vs_wind.png and the rank correlations printed.
 Requires numpy, pandas, scipy, matplotlib.
 """
+import os
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')   # folder data/ of the repository
 import numpy as np, pandas as pd
 from scipy import stats
 import matplotlib
@@ -15,8 +17,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 MINE_BEARING = 227.0        # bearing of the southern Illinois coal mines from Indianapolis (deg)
-t = pd.read_csv('Indy_Mass_Balance_Table.csv')
-r = pd.read_csv('diagnostic_ratios.csv')
+t = pd.read_csv(os.path.join(DATA, 'Indy_Mass_Balance_Table.csv'))
+r = pd.read_csv(os.path.join(DATA, 'diagnostic_ratios.csv'))
 day = (t.groupby('Date').agg(ws=('Mean_wind_speed_ms', 'first'), wd=('Mean_wind_direction_deg', 'first')).reset_index()
          .merge(r[['Date', 'Diagnostic_ratio']], on='Date'))
 ratio, ws, wd = day.Diagnostic_ratio.values, day.ws.values, day.wd.values

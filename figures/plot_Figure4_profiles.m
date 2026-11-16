@@ -1,9 +1,9 @@
 %% plot_Figure4_profiles.m
-%  Revised Figure 4: potential temperature and CH4 profiles on 10/04/2012,
+%  Figure 4: potential temperature and CH4 profiles on 10/04/2012,
 %  (a) the 17:00 UTC profile near the upwind transect, (b) the 19:05 UTC
 %  profile near the last downwind transect.
-%  Reviewer 1 (R1.8): both panels now share IDENTICAL axis limits
-%  (CH4, potential temperature and height), so the ABL growth is read directly.
+%  Both panels share identical axis limits (CH4, potential temperature and
+%  height), so the ABL growth is read directly.
 %
 %  Profiles are binned exactly as in the Method scripts (50 m bins of height
 %  above ground, same terrain lookup); the ABL heights are the ones the Method
@@ -14,14 +14,15 @@ clear; close all; clc;
 
 %% ------------------------------------------------------------ settings
 Date    = '20121004';
-MB_ROOT = '/storage/group/zrb5027/default/INFLUX/zrb5027/INFLUXMassBalance';
+% Run this script from its own folder (figures/).
+MB_ROOT = fullfile('..','input','MassBalance');
 addpath(MB_ROOT); addpath(fullfile(MB_ROOT,'LegAndProfileList'));
-addpath('/storage/work/zrb5027/WRFGUI_V3/Observations/INFLUX');
-addpath('/storage/work/zrb5027/WRFGUI_V3/Code');            % ElevationData.nc lives with the Method-script helpers
+addpath(fullfile('..','input','aircraft'));   % aircraft files INFLUX_<yyyymmdd> (not in the repository, see README)
+addpath(fullfile('..','input','helpers'));    % ElevationData.nc
 ELEV = which('ElevationData.nc');
 assert(~isempty(ELEV), 'ElevationData.nc not found: add its folder with addpath');
 outName = sprintf('Fig4_profiles_%s', Date);
-Z_TOP   = 2500;                 % top of the height axis (m), as in the submitted figure
+Z_TOP   = 2500;                 % top of the height axis (m)
 
 %% ------------------------------------------------------------ data (as in the Method scripts)
 L = load(fullfile(MB_ROOT,'LegAndProfileList',Date));

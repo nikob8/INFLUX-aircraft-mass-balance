@@ -9,7 +9,7 @@
 %    (1) MB   : MeanWDIR / MeanWSPD stored in Solution-MethodA.mat, i.e. the
 %               wind the mass balance calculation actually used (if present)
 %    (2) OBS  : vector mean of the aircraft winds over ALL downwind legs of
-%               the day, legs found exactly as in Compare_WRF_Obs_v5.m
+%               the day, legs found from their times and heights
 %               (DownwindTime anchors + LegHeight).  This mirrors how the
 %               mass balance wind was defined: one wind per day from all
 %               downwind transects.
@@ -19,21 +19,21 @@
 %  exists, otherwise OBS.
 %
 %  Also reported: leg-to-leg spread of wind direction within each day
-%  (circular SD), which is useful for Reviewer 2 (Line 250, representativeness
-%  of a single mean wind direction).
+%  (circular SD), a measure of how representative a single mean wind
+%  direction is.
 %
 %  Outputs (in OUT_DIR):
 %     Wind_by_day.csv     one row per flight day
 %     Wind_by_leg.csv     one row per downwind leg
 %     Indy_Mass_Balance_Table_withWD.xlsx   copy of the table + new columns
 %
-%  Helper functions are copied verbatim from Compare_WRF_Obs_v5.m.
-%  Nikolay Balashov -- INFLUX aircraft paper, reviewer revision
+%  The helper functions at the end find the downwind legs in the aircraft record.
+%  Run from this folder (analyses/).  Nikolay Balashov
 %  ========================================================================
 
 clc; clear; close all;
 
-%% ---------------- settings (same paths as Compare_WRF_Obs_v5.m) ---------
+%% ---------------- settings -----------------------------------------------
 ALL_DATES = {'20110301','20110429','20110601','20110630','20110712', ...
              '20120606','20121004','20121108','20121218','20130314', ...
              '20130319','20130814','20131107','20140224','20140725', ...
@@ -43,19 +43,18 @@ ALL_DATES = {'20110301','20110429','20110601','20110630','20110712', ...
              '20150825','20150902','20160229','20160306','20160307', ...
              '20160317','20160318'};
 
-cfg.GUI_ROOT    = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0';
-cfg.OBS_DIR     = fullfile(cfg.GUI_ROOT,'Observations','INFLUX');
-cfg.VTABLE_FILE = fullfile(cfg.OBS_DIR,'VTable_INFLUX');
-cfg.MB_ROOT     = '/storage/work/nvb5011/INFLUX_Paper_2/MassBalanceResults2';
+cfg.OBS_DIR     = fullfile('..','input','aircraft');  % aircraft files INFLUX_<yyyymmdd> (not in the repository, see README)
+cfg.VTABLE_FILE = fullfile(cfg.OBS_DIR,'VTable_INFLUX');   % optional list of the columns; without it the default column order is used
+cfg.MB_ROOT     = fullfile('..','results');           % <yyyymmdd>/Solution-MethodA.mat
 cfg.MB_SOLUTION = 'Solution-MethodA.mat';
-cfg.XLS_IN      = 'Indy_Mass_Balance_Table.xlsx';     % in the current folder
+cfg.XLS_IN      = fullfile('..','data','Indy_Mass_Balance_Table.xlsx');   % Table S1; a copy with the two wind columns goes to OUT_DIR
 cfg.OUT_DIR     = fullfile(pwd,'wind_dir');
 cfg.MISSING_VAL = -99;
-cfg.MIN_LEG_KEEP = 240;      % s, drop climbs/descents (as in v5)
+cfg.MIN_LEG_KEEP = 240;      % s, drop climbs/descents
 cfg.FLAG_DEG    = 15;        % flag days where MB and OBS directions differ by more
 
 legOpt = struct('alttol',40,'tolmax',150,'minsec',300,'zwin',60, ...
-                'search',900,'gap',20,'trim',true,'fence',true);   % = v5 settings
+                'search',900,'gap',20,'trim',true,'fence',true);
 
 if ~isfolder(cfg.OUT_DIR), mkdir(cfg.OUT_DIR); end
 
@@ -170,7 +169,7 @@ fprintf('Done.\n');
 
 
 %% ======================================================================
-%  Helper functions (copied from Compare_WRF_Obs_v5.m)
+%  Helper functions
 %  ======================================================================
 
 
@@ -363,7 +362,7 @@ function idx = trim_turnaround(obs, idx, tAnchor)
 % The direction is the leg's OWN principal axis, found by PCA on the track
 % in km -- NOT longitude.  Many INFLUX legs run north-south or diagonally,
 % and on those the longitude derivative is noise, which is what shredded
-% those legs in v4 (07/20/2015, 11/07/2013, 03/19/2013, 11/08/2012).
+% those legs in an earlier version (07/20/2015, 11/07/2013, 03/19/2013, 11/08/2012).
     if numel(idx) < 20, return; end
 
     lat = obs.lat(idx);  lon = obs.lon(idx);
@@ -402,7 +401,7 @@ function [wd, ws, n] = mean_wind_from_wdws(wdir, wspd)
 end
 
 function [wd, ws] = mean_wind_from_uv(u, v)
-% Same convention as the WRFGUI: atan2d(U,V)+180 gives the from-direction.
+% Convention: atan2d(U,V)+180 gives the from-direction.
     um = mean(u(:),'omitnan');  vm = mean(v(:),'omitnan');
     wd = mod(atan2d(um, vm) + 180, 360);
     ws = mean(sqrt(u(:).^2 + v(:).^2),'omitnan');

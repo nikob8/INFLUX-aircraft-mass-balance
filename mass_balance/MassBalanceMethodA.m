@@ -1,7 +1,11 @@
 clear
 close all
-addpath('/storage/work/zrb5027/WRFGUI_V3/Observations/INFLUX');
-addpath('/storage/work/zrb5027/WRFGUI_V3/Code')
+% Run this script from its own folder (mass_balance/).  It reads its input from ../input/ and
+% writes the results of each flight day to ../results/<yyyymmdd>/ (see the README).
+addpath(fullfile('..','input','MassBalance'));   % FlightList.mat
+addpath(fullfile('..','input','aircraft'));      % aircraft files INFLUX_<yyyymmdd> (not in the repository, see README)
+addpath(fullfile('..','input','helpers'));       % ElevationData.nc, PlotINFLUX.m, InterX.m (InterX.m: see README)
+addpath(fullfile('..','input','shapefiles'));    % interstates drawn by PlotINFLUX.m
 load FlightList
 START_AT=1;   % set to k to resume at flight k (e.g. 4 = 20110630)
 for FlightDateLoop=START_AT:length(FlightList)
@@ -10,13 +14,13 @@ for FlightDateLoop=START_AT:length(FlightList)
     Date=FlightList(FlightDateLoop).name;
     Date=Date(1:8);
  %   Date='20120606';
-    mkdir(Date);
+    mkdir(['../results/',Date]);
 
 
 %Date='20121004';
 SelfAssignedBackground=0;
 Percentile=0.1;
-load(['LegAndProfileList/',Date])
+load(['../input/MassBalance/LegAndProfileList/',Date])
 File=['INFLUX_',Date];
 %BottomRight BottomLeft TopLeft TopRight
 CountyCorners=[39.63760423971629, -85.95148383144084; 39.63337385377353, -86.32570560518701; 39.92446141560437, -86.32734193809195; 39.9271330073512, -85.95582253907553];
@@ -154,7 +158,7 @@ annotation('rectangle', [0.4, 0.15, 0.5, 0.05],'color',[1 1 1]);
 ABLTheta(ProfileLoop,1)=nanmean(ThetaAveraged(1:ABLTopSpot));
 ABLPressure(ProfileLoop,1)=nanmean(PressureAveraged(1:ABLTopSpot));
 ABLT(ProfileLoop,1)=ABLTheta(ProfileLoop)./((1000./ABLPressure(ProfileLoop)).^(2/7));
-saveas(f,[Date,'/Profile',num2str(ProfileLoop),'.png'])
+saveas(f,['../results/',Date,'/Profile',num2str(ProfileLoop),'.png'])
 close(f)   % free memory: hidden figures were never closed
 end
 
@@ -505,11 +509,11 @@ Enhancement(LegLoop,1)=DownwindMatrix(LegLoop)-UpwindMatrix(LegLoop);
 Flux(LegLoop)=Density(LegLoop).*MeanWSPD.*CosTheta(LegLoop).*(Enhancement(LegLoop)/1e6).*(Distance(LegLoop)*1000).*DownwindABL(LegLoop);
 annotation('textbox', [0.68, 0.9, 0.15, 0.05], 'String', ['Flux = ', num2str(round(Flux(LegLoop))),' mol/s']);
 annotation('rectangle', [0.68, 0.9, 0.15, 0.05],'color',[1 1 1]);
-saveas(f,[Date,'/','T',num2str(LegLoop),'-MethodA','.png'])
+saveas(f,['../results/',Date,'/','T',num2str(LegLoop),'-MethodA','.png'])
 close(f)   % free memory: hidden figures were never closed
 end
 clearvars -except UpwindMatrix DownwindMatrix DownwindABL FlightDateLoop FlightList Date LegHeight UpwindMatrix DownwindMatrix Distance Enhancement DownwindTime ABLHeight ABLTheta ABLT ABLPressure ProfileTime MeanWSPD MeanWDIR Density Flux CosTheta
-save([Date,'/','Solution-MethodA'])
+save(['../results/',Date,'/','Solution-MethodA'])
 end
 
 

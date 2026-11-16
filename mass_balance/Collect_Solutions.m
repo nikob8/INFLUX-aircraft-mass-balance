@@ -7,14 +7,21 @@
 %     All_Solutions.csv   one row per transect: date, transect, time, height,
 %                         ABL, CosTheta and the flux of each method
 %
-%  Run it from the folder that holds the date folders (your MassB folder) after
-%  the four Method scripts have finished.  Missing files are skipped and listed.
+%  Run it from this folder (mass_balance/) after the four Method scripts have
+%  finished for all flight days.  It reads the date folders of ../results/ and
+%  writes the two files there.  Missing files are skipped and listed.
 
 clear; clc;
-ROOT = pwd;                                   % folder with 20110301/, 20110429/, ...
+ROOT = fullfile('..','results');              % folder with 20110301/, 20110429/, ... (written by the Method scripts)
+N_DAYS = 37;                                  % flight days of the paper
 d = dir(ROOT);
 dates = sort({d([d.isdir] & ~cellfun(@isempty, regexp({d.name}, '^\d{8}$', 'once'))).name});
 fprintf('%d date folders found in %s\n', numel(dates), ROOT);
+% The repository holds All_Solutions.mat for all flight days, but only one date folder (20121004):
+% a complete All_Solutions.mat is not replaced by a partial one.
+assert(numel(dates) >= N_DAYS || ~isfile(fullfile(ROOT,'All_Solutions.mat')), ...
+    ['Only %d of the %d date folders are in %s, so All_Solutions.mat there would be replaced by an incomplete file. ' ...
+     'Run the Method scripts for all flight days first (or move All_Solutions.mat away).'], numel(dates), N_DAYS, ROOT);
 
 methods = {'A','B','C','D'};
 for m = 1:numel(methods)

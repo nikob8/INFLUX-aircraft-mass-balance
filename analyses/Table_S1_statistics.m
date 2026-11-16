@@ -21,8 +21,9 @@
 %  Expected output: see the end of this file.
 
 clear; clc;
-csvFile  = 'Indy_Mass_Balance_Table.csv';
-critFile = 'SSLF_plume_criteria.csv';            % optional (plume widths, automated selection)
+% Run from this folder (analyses/): the two tables are read from ../data/.
+csvFile  = fullfile('..','data','Indy_Mass_Balance_Table.csv');
+critFile = fullfile('..','data','SSLF_plume_criteria.csv');   % optional (plume widths, automated selection)
 SSLF     = [39.714691162109375, -86.205429077148438];                 % lat, lon
 % Marion County corners (lat, lon): bottom right, bottom left, top left, top right
 County   = [39.63760423971629, -85.95148383144084; 39.63337385377353, -86.32570560518701; ...

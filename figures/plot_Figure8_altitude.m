@@ -1,9 +1,9 @@
 %% plot_Figure8_altitude.m
 %  Figure 8: flux deviation vs. transect height deviation for the four
 %  background methods, with the cos(theta) fluxes of All_Solutions.mat and the
-%  method names of the revision (Downwind Edge).  Each panel shows the per
+%  method names of the paper.  Each panel shows the per
 %  transect deviations from the daily mean, a least-squares line, its slope
-%  with 1 SE and the p-value of the slope (R1.10).  The script also prints the
+%  with 1 SE and the p-value of the slope.  The script also prints the
 %  correlation between height deviation and time deviation (quoted as r = 0.55
 %  in Section 3.1.1).
 %
@@ -13,7 +13,7 @@
 clear; close all; clc;
 
 %% ------------------------------------------------------------ settings
-SOL_FILE = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/revision_codes/revis_oct26/MassB/All_Solutions.mat';
+SOL_FILE = fullfile('..','results','All_Solutions.mat');   % written by mass_balance/Collect_Solutions.m
 outName  = 'Fig8_flux_vs_height';
 FN = 'Arial';
 names  = {'Downwind Edge', 'Upwind', 'Adjusted ABL Upwind', 'Upwind Edge'};

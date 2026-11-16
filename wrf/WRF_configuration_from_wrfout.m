@@ -13,7 +13,7 @@
 %  Run it once; the text file goes into the repository (wrf/ folder).
 
 clear; clc;
-WRF_ROOT = '/storage/group/zrb5027/default/INFLUX/nvb5011/';
+WRF_ROOT = '/path/to/wrfout/';   % SET THIS: folder with the WRF-Chem output (run folders WRF_* with wrfout files; not archived, see README)
 OUT_FILE = fullfile(pwd, 'WRF_configuration.txt');
 
 dirs = dir(fullfile(WRF_ROOT, 'WRF_*')); dirs = dirs([dirs.isdir]);

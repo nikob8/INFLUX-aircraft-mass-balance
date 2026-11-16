@@ -38,14 +38,15 @@
 clear; clc;
 
 %% ------------------------------------------------------------ settings
-MB_ROOT  = '/storage/group/zrb5027/default/INFLUX/zrb5027/INFLUXMassBalance';
+% Run this script from its own folder (wrf/).
+MB_ROOT  = fullfile('..','input','MassBalance');   % FlightList.mat, LegAndProfileList/
 LEG_DIR  = fullfile(MB_ROOT, 'LegAndProfileList');
-OBS_DIR  = '/storage/work/zrb5027/WRFGUI_V3/Observations/INFLUX';
-WRF_ROOT = '/storage/group/zrb5027/default/INFLUX/nvb5011/';
-OUT_DIR  = fullfile(pwd, 'WRF_subsets');
+OBS_DIR  = fullfile('..','input','aircraft');      % aircraft files INFLUX_<yyyymmdd> (not in the repository, see README)
+WRF_ROOT = '/path/to/wrfout/';   % SET THIS: folder with the WRF-Chem output (run folders WRF_* with wrfout files; not archived, see README)
+OUT_DIR  = fullfile('..','input','WRF_subsets');   % where analyses/Diagnostic_ratio.m reads the files
 DOMAIN   = 2;          % 3 km domain
 KMAX     = 25;         % lowest model levels kept (about 3 km above ground)
-BOX_KM   = 160;        % half-width of the sub-domain around the county centre (as in Trajectory_check_R2_7.m)
+BOX_KM   = 160;        % half-width of the sub-domain around the county centre (as in Trajectory_check.m)
 FULL_DAYS = {'20141119'};            % days stored on the whole d02 grid (Figure 12: coal mine plumes from southern Illinois)
 HOURS_BEFORE = 8;      % hours before the first transect (back trajectories)
 HOURS_AFTER  = 1;      % hours after the last transect

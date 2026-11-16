@@ -13,11 +13,12 @@
 %      after saving.
 %    * a day that throws an error is logged and skipped instead of stopping the
 %      run (Run_MethodsCD_log.txt)
-%    * all paths are set below; results go to <pwd>/<Date>/Solution-MethodC.mat
-%      and Solution-MethodD.mat with the same variable names as before, so
-%      Collect_Solutions.m works unchanged
+%    * all folders are set below; the results go to ../results/<Date>/Solution-MethodC.mat
+%      and Solution-MethodD.mat with the same variable names as those of
+%      MassBalanceMethodC.m and MassBalanceMethodD.m, so Collect_Solutions.m
+%      reads either
 %
-%  Run from your MassB folder.  Afterwards run Collect_Solutions.m.
+%  Run from this folder (mass_balance/).  Afterwards run Collect_Solutions.m.
 
 clear; close all force; clc;
 
@@ -27,13 +28,14 @@ START_AT  = 1;               % first flight index in FlightList (resume)
 SKIP_DONE = false;           % true: skip days that already have Solution-MethodX.mat
 MAKE_FIGS = false;           % true: also save profile and transect PNGs
 
-MB_ROOT  = '/storage/group/zrb5027/default/INFLUX/zrb5027/INFLUXMassBalance';
+MB_ROOT  = fullfile('..','input','MassBalance');    % FlightList.mat, LegAndProfileList/
 LEG_DIR  = fullfile(MB_ROOT, 'LegAndProfileList');
-OBS_DIR  = '/storage/work/zrb5027/WRFGUI_V3/Observations/INFLUX';      % INFLUX_<Date>
-CODE_DIR = '/storage/work/zrb5027/WRFGUI_V3/Code';                     % InterX.m, PlotINFLUX.m
-OUT_ROOT = pwd;
+OBS_DIR  = fullfile('..','input','aircraft');       % aircraft files INFLUX_<yyyymmdd> (not in the repository, see README)
+CODE_DIR = fullfile('..','input','helpers');        % ElevationData.nc, PlotINFLUX.m, InterX.m (InterX.m: see README)
+ROADS_SHP = fullfile('..','input','shapefiles');    % interstates drawn by PlotINFLUX.m (only with MAKE_FIGS)
+OUT_ROOT = fullfile('..','results');                % one folder per flight day
 
-addpath(MB_ROOT); addpath(LEG_DIR); addpath(OBS_DIR); addpath(CODE_DIR);
+addpath(MB_ROOT); addpath(LEG_DIR); addpath(OBS_DIR); addpath(CODE_DIR); addpath(ROADS_SHP);
 need = {'FlightList.mat','ElevationData.nc','InterX'};
 for q = 1:numel(need)
     assert(~isempty(which(need{q})), 'Cannot find %s on the path. Add its folder in the settings block.', need{q});

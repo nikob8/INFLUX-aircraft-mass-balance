@@ -20,9 +20,10 @@
 %  Output: diagnostic_ratios.csv (one row per flight day) and Diag_ratio.mat
 %  with the matrix Diag_All2 [wind speed, wind direction, ratio, Downwind Edge
 %  daily emission rate, yyyymmdd], the layout read by plot_Figure13_diagnostic.m,
-%  plot_Figure14_bootstrap.m and Trajectory_check_R2_7.m (point their
-%  DIAG_FILE at Diag_ratio.mat).  If DIAG_OLD exists, the script prints the
-%  published values next to the new ones.
+%  plot_Figure14_bootstrap.m and Trajectory_check.m (their DIAG_FILE; the
+%  published file is results/Diag_ratio.mat).  Both files are written into the
+%  current folder.  If DIAG_OLD exists, the script prints the earlier values
+%  next to the new ones.
 %
 %  This script replaces the original diagnostic-ratio script (N. Balashov),
 %  which read the wrfout files directly; the computation is the same,
@@ -33,9 +34,9 @@
 clear; clc;
 
 %% ------------------------------------------------------------ settings
-SUB_DIR  = fullfile(pwd, 'WRF_subsets');                    % WRF_subset_<yyyymmdd>.mat files
-SOL_FILE = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/revision_codes/revis_oct26/MassB/All_Solutions.mat';   % optional
-DIAG_OLD = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/Diag4.mat';   % optional: published values for comparison
+SUB_DIR  = fullfile('..','input','WRF_subsets');            % WRF_subset_<yyyymmdd>.mat files (Zenodo data set, see README)
+SOL_FILE = fullfile('..','results','All_Solutions.mat');    % optional
+DIAG_OLD = '';                                            % optional: a Diag_ratio.mat of an earlier run, for comparison
 OUT_DIR  = pwd;
 LEVEL    = 8;            % model level (about 300 m above ground)
 HOURS    = 16:20;        % UTC hours read; the ratio uses the downwind line at 17 to 20 UTC
@@ -117,7 +118,7 @@ T = table(Date, sector, ratio, sdRatio, upRatio, cityMean, bgSD, wsDay, wdDay, f
      'City_enhancement_mean_ppb', 'Background_SD_ppb', 'Mean_wind_speed_ms', 'Mean_wind_direction_deg', 'Flux_DownwindEdge_mols'});
 T.Date = arrayfun(@(d) sprintf('%s-%s-%s', d{1}(1:4), d{1}(5:6), d{1}(7:8)), cellstr(Date), 'UniformOutput', false);
 writetable(T, fullfile(OUT_DIR, 'diagnostic_ratios.csv'));
-Diag_All2 = [wsDay, wdDay, ratio, flux, str2double(Date)];      % layout of Diag4.mat
+Diag_All2 = [wsDay, wdDay, ratio, flux, str2double(Date)];      % the layout the figure scripts read
 save(fullfile(OUT_DIR, 'Diag_ratio.mat'), 'Diag_All2', 'T');
 fprintf('\n%d days; ratio > %g on %d days\n', n, THRESH, nnz(ratio > THRESH));
 

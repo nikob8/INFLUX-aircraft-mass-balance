@@ -18,14 +18,14 @@
 clear; close all; clc;
 
 %% ------------------------------------------------------------ settings
-SOL_FILE  = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/revision_codes/revis_oct26/MassB/All_Solutions.mat';
-DIAG_FILE = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/revision_codes/revis_oct26/WRF/Diag_ratio.mat';   % written by analyses/Diagnostic_ratio.m (same layout as the old Diag4.mat)
+SOL_FILE  = fullfile('..','results','All_Solutions.mat');   % written by mass_balance/Collect_Solutions.m
+DIAG_FILE = fullfile('..','results','Diag_ratio.mat');      % written by analyses/Diagnostic_ratio.m
 THRESH = 2; NMAX = 20; NBOOT = 5000; SEED = 1;
 outName = 'Fig14_bootstrap_SE'; FN = 'Arial';
 
 %% ------------------------------------------------------------ daily estimates and the two pools
 S = load(SOL_FILE, 'SolA'); SolA = S.SolA;
-D = load(DIAG_FILE); D = D.Diag_All2;                 % columns: wind speed, wind direction, ratio, old flux, yyyymmdd
+D = load(DIAG_FILE); D = D.Diag_All2;                 % columns: wind speed, wind direction, ratio, Downwind Edge emission rate, yyyymmdd
 dates = arrayfun(@(v) sprintf('%d', v), D(:,5), 'UniformOutput', false);
 flux = NaN(numel(dates),1);
 for i = 1:numel(dates)

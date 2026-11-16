@@ -12,7 +12,8 @@
 %  In panel (c) the landfill file is multiplied by 1.4 and the wastewater file divided
 %  by 3.5, as in the simulations (an adjustment toward the estimates of Lamb et al., 2016;
 %  the Marion County totals are then 56, 28 and 2 mol/s for gas, landfill and wastewater).
-%  Optional: Indianapolis_Interstate_Mileposts.shp (roads of panel c, not in the repository).
+%  Roads of panel (c): input/shapefiles/Indianapolis_Interstate_Mileposts.shp of the repository.
+%  Run the script from its own folder (figures/).
 %  Needs the Mapping Toolbox; clim needs MATLAB R2022a or later (caxis in older versions).
 %  Output: INFLUX_emissions_log10_turbo.png
 
@@ -22,7 +23,7 @@ close all
 
 %% ===================== PATHS =====================
 DATA_DIR  = fullfile('..', 'data', 'emissions');      % folder with Emissions9km, Emissions3km, ThomasEmissions
-ROADS_SHP = 'Indianapolis_Interstate_Mileposts.shp';  % optional
+ROADS_SHP = fullfile('..', 'input', 'shapefiles', 'Indianapolis_Interstate_Mileposts.shp');   % roads of panel (c)
 addpath(fullfile(DATA_DIR, 'Emissions9km'))
 addpath(fullfile(DATA_DIR, 'ThomasEmissions'))
 addpath(fullfile(DATA_DIR, 'Emissions3km'))

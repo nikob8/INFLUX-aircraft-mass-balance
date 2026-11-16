@@ -1,5 +1,5 @@
 %% Flight_Atlas.m
-%  One page per flight day (Reviewer 2, per-flight documentation request):
+%  One page per flight day (Document S1 of the Supporting Information):
 %     (a) map of the upwind and all downwind transects, coloured by CH4, with
 %         Marion County, the SSLF, the Indianapolis highways and the mean wind
 %     (b) potential temperature profiles with the diagnosed ABL heights
@@ -20,20 +20,21 @@
 %
 %  Output: Atlas/<Date>.png (one per day) and Atlas/Flight_Atlas.pdf (all days).
 %
-%  Needs on the path: INFLUX_<Date>, LegAndProfileList/<Date>.mat, FlightList.mat,
+%  Needs: INFLUX_<Date>, LegAndProfileList/<Date>.mat, FlightList.mat,
 %  ElevationData.nc, InterX.m, alongTrackKm.m, PlotINFLUX.m (or the interstate
-%  shapefile), and All_Solutions.mat in the current folder.
+%  shapefile), and All_Solutions.mat (folders in the settings block).  Run from
+%  this folder (figures/).
 
 clear; close all force; clc;
 
 %% ------------------------------------------------------------ settings
 DATES    = {};               % {} = all days in FlightList; or e.g. {'20121004','20141119'}
-MB_ROOT  = '/storage/group/zrb5027/default/INFLUX/zrb5027/INFLUXMassBalance';
+MB_ROOT  = fullfile('..','input','MassBalance');    % FlightList.mat, LegAndProfileList/
 LEG_DIR  = fullfile(MB_ROOT, 'LegAndProfileList');
-OBS_DIR  = '/storage/work/zrb5027/WRFGUI_V3/Observations/INFLUX';      % INFLUX_<Date>
-CODE_DIR = '/storage/work/zrb5027/WRFGUI_V3/Code';                     % InterX.m, PlotINFLUX.m
-ROADS_SHP = '/storage/work/nvb5011/INFLUX_Paper_2/Thomas_2016/Shapefiles';
-SOL_FILE = 'All_Solutions.mat';
+OBS_DIR  = fullfile('..','input','aircraft');       % aircraft files INFLUX_<yyyymmdd> (not in the repository, see README)
+CODE_DIR = fullfile('..','input','helpers');        % ElevationData.nc, PlotINFLUX.m, InterX.m (InterX.m: see README)
+ROADS_SHP = fullfile('..','input','shapefiles');    % Indianapolis_Interstate_Mileposts.shp
+SOL_FILE = fullfile('..','results','All_Solutions.mat');
 OUT_DIR  = 'Atlas';
 PDF_FILE = fullfile(OUT_DIR, 'Flight_Atlas.pdf');
 SSLF_LATLON = [39.714691162109375, -86.205429077148438];
@@ -45,7 +46,7 @@ if isfolder(ROADS_SHP), addpath(ROADS_SHP); end
 for q = {'FlightList.mat','ElevationData.nc','InterX','alongTrackKm'}
     assert(~isempty(which(q{1})), 'Cannot find %s on the path.', q{1});
 end
-assert(isfile(SOL_FILE), '%s not found in %s (run Collect_Solutions.m first)', SOL_FILE, pwd);
+assert(isfile(SOL_FILE), '%s not found (current folder: %s)', SOL_FILE, pwd);
 if ~isfolder(OUT_DIR), mkdir(OUT_DIR); end
 if isfile(PDF_FILE), delete(PDF_FILE); end
 

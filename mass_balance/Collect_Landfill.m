@@ -7,7 +7,7 @@
 %     Landfill_daily.csv       one row per flight day: mean and SD of the
 %                              transects, number of transects
 %
-%  Input: Landfill/<yyyymmdd>_Loop<k>.mat, one file per downwind transect k,
+%  Input: ../results/Landfill/<yyyymmdd>_Loop<k>.mat, one file per downwind transect k,
 %  written by MassBalanceLandfill.m, with the variables
 %     Flag          -1 = no landfill plume could be identified on the transect;
 %                   > 0 = plume quantified (these transects are used in the
@@ -33,11 +33,11 @@
 clear; clc;
 
 %% ------------------------------------------------------------ settings
-LF_DIR   = fullfile(pwd, 'Landfill');                                                      % Loop files written by MassBalanceLandfill.m
-LF_REF   = '/storage/group/zrb5027/default/INFLUX/zrb5027/INFLUXMassBalance/Landfill';    % optional: original results to compare with ('' to skip)
-SOL_FILE = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/revision_codes/revis_oct26/MassB/All_Solutions.mat';
+LF_DIR   = fullfile('..','results','Landfill');   % Loop files written by MassBalanceLandfill.m
+LF_REF   = '';   % optional: folder with earlier Loop files to compare with ('' to skip)
+SOL_FILE = fullfile('..','results','All_Solutions.mat');
 APPLY_COS = true;                       % multiply each transect by cos(theta) of the transect (Equation 1)
-OUT_DIR   = pwd;
+OUT_DIR   = pwd;                        % the two tables are written here (the published ones are in ../data/)
 
 %% ------------------------------------------------------------ read every Loop file
 if APPLY_COS

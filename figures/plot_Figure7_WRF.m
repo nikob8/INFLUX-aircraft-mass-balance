@@ -1,19 +1,21 @@
 %% ========================================================================
-%  plot_Figure7_WRF.m   (replaces Figure7_v4.m)
+%  plot_Figure7_WRF.m
 %  ------------------------------------------------------------------------
 %  Figure 7: WRF-Chem regional background, Marion County and total CH4 on
 %  03/01/2011 (maps, a to c) and along the downwind idealized transect selected
 %  by the simulated wind, with the aircraft observations of transect T3 (d to f).
 %
-%  Revision of 2026-11-07: same data and computation as Figure7_v4.m, redrawn in
-%  the style of Figures 2, 3 and 5: panel letters and short titles, a key to the
-%  map symbols between the two rows, a short legend in every line panel, the
-%  diagnostic ratio in panel (f), one sans-serif font, and a shorter caption.
+%  Drawn in the style of Figures 2, 3 and 5: panel letters and short titles, a
+%  key to the map symbols between the two rows, a short legend in every line
+%  panel, and the diagnostic ratio in panel (f).
 %  Note: the transects are labeled by their side of the county; the N transect is
 %  the downwind transect for southerly winds (downwind_name below).
 %
-%  Requires  <COLO_DIR>/Colocated_YYYYMMDD.mat  from Compare_WRF_Obs_v5
-%  plus one wrfout for the maps and the theoretical transect (Mapping Toolbox).
+%  Requires  <COLO_DIR>/Colocated_YYYYMMDD.mat  (the model sampled along the
+%  flight track, with the statistics of each transect; the file of 03/01/2011
+%  is in input/colocated/ of the repository), the aircraft file of the day, and
+%  one wrfout file for the maps and the theoretical transect (Mapping Toolbox).
+%  Run the script from its own folder (figures/).
 %  Output: Figure7_YYYYMMDD.png (300 dpi); the caption and the numbers quoted in
 %  the text are printed before the export.
 %  ========================================================================
@@ -30,13 +32,13 @@ MAP_LEVEL = 8;           % model level, as in the original figure
                          % ('auto' = nearest the leg mean altitude)
 
 DIRECTION = 'auto';      % downwind transect to plot: 'auto' picks it from the
-                         % modelled wind exactly as Generate_Upwind_v4 does,
+                         % modelled wind (eight sectors, see downwind_name below),
                          % or force one of N NE E SE S SW W NW
 
-COLO_DIR  = fullfile(pwd,'figs_v4');
-WRF_ROOT  = '/storage/group/zrb5027/default/INFLUX/nvb5011/';
-OBS_DIR   = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/Observations/INFLUX';
-SHAPE_PATH= '/storage/work/nvb5011/INFLUX_Paper_2/Thomas_2016/Shapefiles';
+COLO_DIR  = fullfile('..','input','colocated');    % Colocated_<yyyymmdd>.mat
+WRF_ROOT  = '/path/to/wrfout/';   % SET THIS: folder with the WRF-Chem output (run folders WRF_* with wrfout files; not archived, see README)
+OBS_DIR   = fullfile('..','input','aircraft');     % aircraft files INFLUX_<yyyymmdd> (not in the repository, see README)
+SHAPE_PATH= fullfile('..','input','shapefiles');   % Marion_County_Boundary.shp, Indianapolis_Interstate_Mileposts.shp
 
 DOMAIN = 2;  KMAX = 25;
 JJJ    = 10;                       % subset half-width, as in the original
@@ -315,7 +317,7 @@ fprintf('\n---------------- caption ----------------\n%s\n', cap);
 fprintf('measured mean wind %.0f deg at %.1f m/s, simulated mean %.0f deg at %.1f m/s, aircraft transect %s at %.0f m above ground\n', ...
     st.wd_obs, st.ws_obs, wdModel, wsModel, LEG, st.altAGL);
 
-% numbers quoted in Section 2.6.1 and in the response letter, for checking against this run
+% numbers quoted in Section 2.6.1, for checking against this run
 eA  = C.obs_enh_ppb(:);
 eAs = movmean(eA, 15, 'omitnan');                    % aircraft, 15-point running mean
 [pS, iS] = max(tCty);  [pA, iA] = max(eA);  [pAs, iAs] = max(eAs);
@@ -350,8 +352,8 @@ end
 %% ========================= FUNCTIONS ====================================
 
 function nm = downwind_name(wd)
-% Downwind transect label for a wind coming FROM wd, matching the
-% eight-sector logic in Generate_Upwind_v4.
+% Downwind transect label for a wind coming FROM wd (eight sectors of
+% 45 degrees).
     if     wd >= 157.5 && wd < 202.5, nm = 'N';
     elseif wd >= 202.5 && wd < 247.5, nm = 'NE';
     elseif wd >= 247.5 && wd < 292.5, nm = 'E';
@@ -364,8 +366,8 @@ function nm = downwind_name(wd)
 end
 
 function [ii, jj] = downwind_indices(nm)
-% Index pairs into the LON_E x LAT_E subset for each downwind transect,
-% exactly the lines Generate_Upwind_v4 samples.
+% Index pairs into the LON_E x LAT_E subset for each idealized downwind
+% transect (straight lines of grid points).
     switch upper(nm)
         case 'N',  ii = (6:28)';            jj = repmat(28, 23, 1);
         case 'S',  ii = (6:28)';            jj = repmat(8, 23, 1);

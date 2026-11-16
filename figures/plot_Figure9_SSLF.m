@@ -1,19 +1,18 @@
 %% plot_Figure9_SSLF.m
-%  Revised Figure 9 (old Figure 10): SSLF CH4 emission rate per flight day.
-%  Reviewer 1 (R1.11): the date labels are replaced by a chronological flight
-%  index (dates are listed in Table S1).
+%  Figure 9: SSLF CH4 emission rate per flight day, against a chronological
+%  flight index (the dates are listed in Table S1).
 %
-%  Same data and logic as Zach's ReadLandfillsDaily.m: every Landfill/<Date>_Loop<k>.mat
+%  Same data and logic as the original ReadLandfillsDaily.m (Z. Barkley): every Landfill/<Date>_Loop<k>.mat
 %  with Flag > 0 counts; the day value is the mean of its transects; the error
 %  bar is std(...,1) of the transects; red = only one transect that day.
 %  New: with APPLY_COS = true each transect flux is multiplied by cos(theta) of
-%  its transect (from All_Solutions.mat), so the figure matches Table S1 (v5).
+%  its transect (from All_Solutions.mat), so the figure matches Table S1.
 
 clear; close all; clc;
 
 %% ------------------------------------------------------------ settings
-LF_DIR    = fullfile(pwd, 'Landfill');       % Loop files written by MassBalanceLandfill.m (same layout as the original Landfill folder)
-SOL_FILE  = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/revision_codes/revis_oct26/MassB/All_Solutions.mat';   % from Collect_Solutions.m
+LF_DIR    = fullfile('..','results','Landfill');             % Loop files written by mass_balance/MassBalanceLandfill.m
+SOL_FILE  = fullfile('..','results','All_Solutions.mat');    % written by mass_balance/Collect_Solutions.m
 APPLY_COS = true;
 outName   = 'Fig9_SSLF_daily';
 
@@ -26,6 +25,7 @@ end
 
 %% ------------------------------------------------------------ read the Loop files (as ReadLandfillsDaily.m)
 first = dir(fullfile(LF_DIR, '*Loop1*'));
+assert(~isempty(first), 'No <yyyymmdd>_Loop<k>.mat files in %s: run mass_balance/MassBalanceLandfill.m first.', LF_DIR);
 dates = sort(unique(cellfun(@(n) n(1:8), {first.name}, 'UniformOutput', false)));
 dayMean = []; daySD = []; dayN = []; dayDate = {};
 for i = 1:numel(dates)

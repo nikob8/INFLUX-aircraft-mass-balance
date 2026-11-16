@@ -1,21 +1,21 @@
 %% plot_Figure11_SSLF_comparison.m
 %  Figure 11: estimates of the South Side Landfill (SSLF) emission rate (Section 3.1.3).
 %
-%  Inputs (current folder):
-%    Landfill_daily.csv   (data/ folder of the repository; or Table S1,
+%  Inputs (folder data/ of the repository; run the script from its own folder, figures/):
+%    Landfill_daily.csv   (or Table S1,
 %                         Indy_Mass_Balance_Table.csv) daily SSLF emission rates of
 %                         the 31 flight days with a quantified plume (Collect_Landfill.m);
 %                         their mean is the 26 +/- 5 mol/s of the paper.
 %    EPA_SSLF_GHGRP.csv   EPA Greenhouse Gas Reporting Program estimates for the SSLF,
 %                         2011 to 2023, from Equations HH-6 and HH-8 (mol/s), with the
-%                         method used for the reported value. If it is missing, EPA.mat
+%                         method used for the reported value. If it is missing, EPA.mat in the current folder
 %                         (variables a = HH-6 and b = HH-8, 2011 to 2023, mol/s; the file of
 %                         the original figure) is read instead and the csv is written from it.
-%    Barkley2026_SSLF_annual.csv  (data/ folder of the repository) annual SSLF emission
+%    Barkley2026_SSLF_annual.csv  annual SSLF emission
 %                         rates of Barkley et al. (2026, their Figure 5) from the tower closest
 %                         to the landfill (Tower 10), 2017 to 2024: mean and full range of
 %                         their sensitivity analysis, kg CH4/h. If it is missing,
-%                         TowerLandfillForNikolay.mat (Year; Landfill = [min mean max], kg/h)
+%                         TowerLandfillForNikolay.mat (current folder; Year; Landfill = [min mean max], kg/h)
 %                         is read instead and the csv is written from it.
 %  Output: Fig11_SSLF_comparison.png (300 dpi) and .pdf; the values drawn are printed.
 %
@@ -48,13 +48,15 @@ else
 end
 fprintf('Font used for all text: %s (%s)\n', FONT, ternary(UNI, 'Unicode sub/superscripts', 'TeX sub/superscripts'));
 
+DATA_DIR = fullfile('..', 'data');          % folder data/ of the repository
+
 %% ------------------------------------------------------------ EPA values
-if isfile('EPA_SSLF_GHGRP.csv')
-    E = readtable('EPA_SSLF_GHGRP.csv');
+if isfile(fullfile(DATA_DIR, 'EPA_SSLF_GHGRP.csv'))
+    E = readtable(fullfile(DATA_DIR, 'EPA_SSLF_GHGRP.csv'));
     yrs = E.Year(:);  hh6 = E.HH6_mols(:);  hh8 = E.HH8_mols(:);
     if iscell(yrs), yrs = str2double(yrs); end
 else
-    assert(isfile('EPA.mat'), 'EPA_SSLF_GHGRP.csv (or EPA.mat) not found in this folder');
+    assert(isfile('EPA.mat'), 'EPA_SSLF_GHGRP.csv not found in %s (and no EPA.mat in the current folder)', DATA_DIR);
     S = load('EPA.mat');                     % a = HH-6, b = HH-8, 2011 to 2023 (mol/s)
     yrs = YEARS_EPA;  hh6 = double(S.a(:));  hh8 = double(S.b(:));
     assert(numel(hh6) == numel(yrs) && numel(hh8) == numel(yrs), 'EPA.mat: expected 13 values (2011 to 2023) in a and b');
@@ -64,8 +66,8 @@ else
 end
 
 %% ------------------------------------------------------------ Barkley et al. (2026), annual tower estimates
-if isfile('Barkley2026_SSLF_annual.csv')
-    B = readtable('Barkley2026_SSLF_annual.csv');
+if isfile(fullfile(DATA_DIR, 'Barkley2026_SSLF_annual.csv'))
+    B = readtable(fullfile(DATA_DIR, 'Barkley2026_SSLF_annual.csv'));
     byr = B.Year(:);  bkg = [B.Min_kgh(:) B.Mean_kgh(:) B.Max_kgh(:)];
     if iscell(byr), byr = str2double(byr); end
 elseif isfile('TowerLandfillForNikolay.mat')
@@ -75,7 +77,7 @@ elseif isfile('TowerLandfillForNikolay.mat')
         'Barkley2026_SSLF_annual.csv');
     fprintf('wrote Barkley2026_SSLF_annual.csv from TowerLandfillForNikolay.mat (add it to the data/ folder of the repository)\n');
 else
-    error('Barkley2026_SSLF_annual.csv (or TowerLandfillForNikolay.mat) not found: copy it from the data/ folder of the repository.');
+    error('Barkley2026_SSLF_annual.csv not found in %s.', DATA_DIR);
 end
 kb = byr <= YEAR_MAX;
 bmol = bkg/K;                                             % mol/s: min, mean, max
@@ -84,19 +86,19 @@ for k = find(kb(:))'
 end
 
 %% ------------------------------------------------------------ this study
-if isfile('Landfill_daily.csv')                          % one row per flight day
-    opts = detectImportOptions('Landfill_daily.csv');
+if isfile(fullfile(DATA_DIR, 'Landfill_daily.csv'))       % one row per flight day
+    opts = detectImportOptions(fullfile(DATA_DIR, 'Landfill_daily.csv'));
     opts = setvartype(opts, 'Date', 'char');
-    T = readtable('Landfill_daily.csv', opts);
+    T = readtable(fullfile(DATA_DIR, 'Landfill_daily.csv'), opts);
     dates = T.Date;  f = T.Flux_Landfill_mean_mols;
-elseif isfile('Indy_Mass_Balance_Table.csv')         % Table S1, one row per transect: daily means of the landfill column
-    opts = detectImportOptions('Indy_Mass_Balance_Table.csv');
+elseif isfile(fullfile(DATA_DIR, 'Indy_Mass_Balance_Table.csv'))   % Table S1, one row per transect: daily means of the landfill column
+    opts = detectImportOptions(fullfile(DATA_DIR, 'Indy_Mass_Balance_Table.csv'));
     opts = setvartype(opts, 'Date', 'char');
-    T = readtable('Indy_Mass_Balance_Table.csv', opts);
+    T = readtable(fullfile(DATA_DIR, 'Indy_Mass_Balance_Table.csv'), opts);
     [dates, ~, g] = unique(T.Date);
     f = accumarray(g, T.Flux_Landfill_mols, [], @(v) mean(v, 'omitnan'));
 else
-    error('Landfill_daily.csv (or Indy_Mass_Balance_Table.csv) not found: copy it from the data/ folder of the repository.');
+    error('Landfill_daily.csv (or Indy_Mass_Balance_Table.csv) not found in %s.', DATA_DIR);
 end
 yr = cellfun(@(d) str2double(d(1:4)), dates);             % dates are yyyy-mm-dd
 ok = ~isnan(f);

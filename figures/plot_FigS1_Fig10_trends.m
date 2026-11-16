@@ -1,20 +1,20 @@
 %% plot_FigS1_Fig10_trends.m
-%  Makes two figures from Zach's TempAndTime*Plots.m scripts, with the fluxes
-%  recomputed with cos(theta) and the p-value of each slope printed (R1.10):
-%     Figure S1  : citywide Edge emission rate vs. flight date and vs. takeoff
-%                  temperature (was Figure 9 in the submission)
+%  Makes two figures (after the TempAndTime*Plots.m scripts of Z. Barkley), with
+%  the emission rates that include cos(theta) and the p-value of each slope:
+%     Figure S1  : citywide Downwind Edge emission rate vs. flight date and
+%                  vs. takeoff temperature
 %     Figure 10  : SSLF emission rate vs. flight date and vs. temperature
-%                  (was Figure 11 in the submission)
 %
 %  Inputs
-%     TempsAndTimes.mat in INFLUXMassBalance (one row per flight day)
-%        TimeMatrix(:,1) old flux, TimeMatrix(:,2) day number
-%        TempMatrix(:,1) old flux, TempMatrix(:,2) takeoff temperature (deg F)
+%     TempsAndTimes.mat in input/MassBalance (one row per flight day)
+%        TimeMatrix(:,1) earlier flux, TimeMatrix(:,2) day number
+%        TempMatrix(:,1) earlier flux, TempMatrix(:,2) takeoff temperature (deg F)
 %        Only the day numbers and temperatures are used; the fluxes are replaced.
 %        The takeoff temperature of a flight day is the same for the city and
-%        the landfill, so this one file serves both figures (the older copy in
-%        INFLUXMassBalance/Landfill reflects an earlier plume selection).
-%     All_Solutions.mat (cos theta Edge fluxes), Landfill/<Date>_Loop<k>.mat
+%        the landfill, so this one file serves both figures.
+%     results/All_Solutions.mat (Downwind Edge emission rates with cos theta) and
+%     results/Landfill/<Date>_Loop<k>.mat (written by MassBalanceLandfill.m).
+%     Run from this folder (figures/).
 %
 %  The rows of TimeMatrix are matched to flight dates by their day spacing, and
 %  the script stops if the match is not exact.
@@ -22,10 +22,10 @@
 clear; close all; clc;
 
 %% ------------------------------------------------------------ settings
-MB_ROOT  = '/storage/group/zrb5027/default/INFLUX/zrb5027/INFLUXMassBalance';
-LF_DIR   = fullfile(pwd, 'Landfill');                    % Loop files written by MassBalanceLandfill.m
+MB_ROOT  = fullfile('..','input','MassBalance');
+LF_DIR   = fullfile('..','results','Landfill');          % Loop files written by MassBalanceLandfill.m
 TT_FILE  = fullfile(MB_ROOT, 'TempsAndTimes.mat');       % takeoff temperatures and day numbers of all flight days
-SOL_FILE = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/revision_codes/revis_oct26/MassB/All_Solutions.mat';
+SOL_FILE = fullfile('..','results','All_Solutions.mat');
 FN = 'Arial';
 
 %% ------------------------------------------------------------ cos(theta) fluxes
@@ -54,8 +54,12 @@ fprintf('%d city days, %d landfill days with cos(theta) fluxes\n', numel(cityFlu
 %% ------------------------------------------------------------ the two figures
 origin = make_trend_figure(TT_FILE, cityDates, cityFlux, ...
     'Citywide CH_4 emission rate (mol s^{-1})', 'FigS1_city_trends', FN, []);
-make_trend_figure(TT_FILE, lfDates, lfFlux, ...
-    'SSLF CH_4 emission rate (mol s^{-1})', 'Fig10_SSLF_trends', FN, origin);
+if isempty(lfFlux)
+    warning('No landfill results in %s (run mass_balance/MassBalanceLandfill.m first): Figure 10 is not made.', LF_DIR);
+else
+    make_trend_figure(TT_FILE, lfDates, lfFlux, ...
+        'SSLF CH_4 emission rate (mol s^{-1})', 'Fig10_SSLF_trends', FN, origin);
+end
 
 
 %% ============================================================ one figure
