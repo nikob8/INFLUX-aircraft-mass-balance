@@ -6,7 +6,7 @@ Companion data set of
   aircraft-based methane emissions estimates and estimation methodologies with six
   years of data from Indianapolis. Journal of Geophysical Research: Atmospheres.
 Analysis code: https://github.com/nikob8/INFLUX-aircraft-mass-balance
-(version 1.0 archived at https://doi.org/10.5281/zenodo.24184834)
+(archived at Zenodo, https://doi.org/10.5281/zenodo.24184833 for the latest version)
 
 Contents
 --------

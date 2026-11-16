@@ -4,7 +4,7 @@
 %    (b) wind rose of the mean (mass balance) wind direction on each flight
 %        day, stacked by mean wind speed
 %
-%  Reads Indy_Mass_Balance_Table_v5.csv (Table S1, folder data/ of the repository;
+%  Reads Indy_Mass_Balance_Table.csv (Table S1, folder data/ of the repository;
 %  one row per downwind transect). The mean wind speed and direction of the
 %  flight day (the mass balance wind, identical on every transect row of the
 %  day) are taken from the first row of each date.
@@ -17,7 +17,7 @@
 %            wind speed <5 / 5-10 / >10 m/s = 13/16/8 days.
 
 clear; clc;
-csvFile = 'Indy_Mass_Balance_Table_v5.csv';
+csvFile = 'Indy_Mass_Balance_Table.csv';
 outName = 'Fig1_flights_season_windrose';
 
 %% ------------------------------------------------------------ read

@@ -9,7 +9,7 @@ abstract: >-
   run the sensitivity analyses of the Supporting Information, and draw the figures of the paper.
   The data folder holds Table S1 and Data Sets S1 to S4 of the paper. The README describes the
   inputs each script needs and the order in which to run them.
-version: "1.0"
+version: "1.1"
 repository-code: "https://github.com/nikob8/INFLUX-aircraft-mass-balance"
 license: MIT
 authors:

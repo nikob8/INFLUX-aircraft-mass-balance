@@ -22,7 +22,7 @@
 %  Needs on the path: INFLUX_<Date>, LegAndProfileList/<Date>.mat, InterX.m,
 %  alongTrackKm.m, PlotINFLUX.m or the interstate shapefile (optional, roads),
 %  Landfill/<Date>_Loop<k>.mat (optional), <Date>/Solution-MethodA.mat (optional),
-%  Indy_Mass_Balance_Table_v5.csv (optional; data/ folder of the repository).
+%  Indy_Mass_Balance_Table.csv (optional; data/ folder of the repository).
 %  Requires the Mapping Toolbox (worldmap) like the other map figures.
 %  Output: Fig2_Edge_<Date>_T<k>.png (300 dpi) and .pdf
 
@@ -36,7 +36,7 @@ OBS_DIR = fullfile(MB_ROOT,'AircraftObs');    % folder with INFLUX_<Date>  (chan
 ROADS_CODE = '/storage/work/zrb5027/WRFGUI_V3/Code';                         % has PlotINFLUX.m (Zach)
 ROADS_SHP  = '/storage/work/nvb5011/INFLUX_Paper_2/Thomas_2016/Shapefiles';  % Indianapolis_Interstate_Mileposts.shp
 SOL_ROOT   = '/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/revision_codes/revis_oct26/MassB';   % <Date>/Solution-MethodA.mat
-TABLE_S1   = 'Indy_Mass_Balance_Table_v5.csv';   % flux labels are taken from Table S1 when this file is found
+TABLE_S1   = 'Indy_Mass_Balance_Table.csv';   % flux labels are taken from Table S1 when this file is found
 if isfolder(MB_ROOT), addpath(MB_ROOT); end
 if isfolder(OBS_DIR), addpath(OBS_DIR); end
 if isfolder(ROADS_CODE), addpath(ROADS_CODE); end

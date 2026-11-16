@@ -1,6 +1,6 @@
 %% Table_S1_statistics.m
 %  Statistics quoted in the paper that follow directly from Table S1
-%  (Indy_Mass_Balance_Table_v5.csv, folder data/ of the repository; one row per
+%  (Indy_Mass_Balance_Table.csv, folder data/ of the repository; one row per
 %  downwind transect) and from SSLF_plume_criteria.csv (Data Set S4).
 %
 %   1. Time of day of the downwind transects, in UTC and in local time (Section 2.2).
@@ -21,7 +21,7 @@
 %  Expected output: see the end of this file.
 
 clear; clc;
-csvFile  = 'Indy_Mass_Balance_Table_v5.csv';
+csvFile  = 'Indy_Mass_Balance_Table.csv';
 critFile = 'SSLF_plume_criteria.csv';            % optional (plume widths, automated selection)
 SSLF     = [39.714691162109375, -86.205429077148438];                 % lat, lon
 % Marion County corners (lat, lon): bottom right, bottom left, top left, top right
@@ -160,7 +160,7 @@ for q = 1:size(sets,1)
         sets{q,1}, mean(A), nA, min(A), max(A), mean(B), nB, pExact, pNorm);
 end
 
-%  Expected output (Indy_Mass_Balance_Table_v5.csv and SSLF_plume_criteria.csv of the repository):
+%  Expected output (Indy_Mass_Balance_Table.csv and SSLF_plume_criteria.csv of the repository):
 %   147 downwind transects on 37 flight days
 %   1. UTC 15:09 to 20:56, median 18:27; 131 of 147 (89%) between 17 and 20 UTC
 %      local 11:09 to 15:56, median 14:04 (20 flight days on daylight saving time, 17 on standard time)

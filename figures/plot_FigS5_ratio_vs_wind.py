@@ -3,7 +3,7 @@
 direction and the mean wind speed (Section 3.2.3 of the paper).
 
 Inputs (same folder):
-    Indy_Mass_Balance_Table_v5.csv   per-transect results (Table S1): daily wind
+    Indy_Mass_Balance_Table.csv   per-transect results (Table S1): daily wind
     diagnostic_ratios.csv            diagnostic ratio of each flight day
 Output: FigS5_ratio_vs_wind.png and the rank correlations printed.
 Requires numpy, pandas, scipy, matplotlib.
@@ -15,7 +15,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 MINE_BEARING = 227.0        # bearing of the southern Illinois coal mines from Indianapolis (deg)
-t = pd.read_csv('Indy_Mass_Balance_Table_v5.csv')
+t = pd.read_csv('Indy_Mass_Balance_Table.csv')
 r = pd.read_csv('diagnostic_ratios.csv')
 day = (t.groupby('Date').agg(ws=('Mean_wind_speed_ms', 'first'), wd=('Mean_wind_direction_deg', 'first')).reset_index()
          .merge(r[['Date', 'Diagnostic_ratio']], on='Date'))

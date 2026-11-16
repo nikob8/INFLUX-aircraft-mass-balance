@@ -2,7 +2,7 @@
 """Figure S2: daily citywide CH4 emission rates (Downwind Edge approach) by
 meteorological season (Section 3.1.2 of the paper).
 
-Input (same folder): Indy_Mass_Balance_Table_v5.csv (Table S1, one row per
+Input (same folder): Indy_Mass_Balance_Table.csv (Table S1, one row per
     downwind transect). The daily value is the mean of the per-transect Downwind
     Edge emission rates of that day.
 Output: FigS2_seasonal_flux.png; the seasonal counts and means, the overall mean
@@ -16,7 +16,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-t = pd.read_csv('Indy_Mass_Balance_Table_v5.csv')
+t = pd.read_csv('Indy_Mass_Balance_Table.csv')
 day = t.groupby('Date').Flux_DownwindEdge_mols.mean()
 dates = pd.to_datetime(day.index)
 season = np.full(len(day), 4)                      # 4 = SON

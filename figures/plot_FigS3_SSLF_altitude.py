@@ -14,7 +14,7 @@ Three panels, built from Table S1 (one row per downwind transect):
 The script also prints (d): the citywide Downwind Edge emission rate on the
 transects with and without a quantified plume of the same days (Section 3.1.3).
 
-Input (same folder): Indy_Mass_Balance_Table_v5.csv
+Input (same folder): Indy_Mass_Balance_Table.csv
 Output: FigS3_SSLF_altitude.png and the statistics printed.
 Requires numpy, pandas, scipy, matplotlib.
 """
@@ -25,7 +25,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-t = pd.read_csv('Indy_Mass_Balance_Table_v5.csv')
+t = pd.read_csv('Indy_Mass_Balance_Table.csv')
 t['det'] = t.Flux_Landfill_mols.notna()
 t['h_dev'] = t.Height_AGL_m - t.groupby('Date').Height_AGL_m.transform('mean')    # metres from the mean height of the day
 t['z_zi'] = t.Height_AGL_m / t.ABL_height_m

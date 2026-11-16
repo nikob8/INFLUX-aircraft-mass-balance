@@ -24,7 +24,7 @@
 %  Needs on the path: INFLUX_<Date>, LegAndProfileList/<Date>.mat, InterX.m,
 %  alongTrackKm.m, PlotINFLUX.m or the Indianapolis interstate shapefile,
 %  <Date>/Solution-MethodB.mat, -MethodC.mat, -MethodD.mat (in one of SOL_ROOTS),
-%  Indy_Mass_Balance_Table_v5.csv (optional; flux labels from Table S1).
+%  Indy_Mass_Balance_Table.csv (optional; flux labels from Table S1).
 %  Requires the Mapping Toolbox. Output: Fig3_Upwind_<Date>_T<k>.png/.pdf and
 %  Fig5_UpwindVariants_<Date>_T<k>.png/.pdf
 
@@ -49,7 +49,7 @@ SSLF_LATLON = [39.714691162109375, -86.205429077148438];   % South Side Landfill
 % factors do not depend on cos theta, and the flux labels are taken from Table S1 when
 % TABLE_S1 is found, so the originals give the same figure.
 SOL_ROOTS = {'/storage/work/nvb5011/WRF_GUI_CT_2/WRFGUI_V2.0/revision_codes/revis_oct26/MassB', pwd, MB_ROOT};
-TABLE_S1  = 'Indy_Mass_Balance_Table_v5.csv';   % data/ folder of the repository (optional)
+TABLE_S1  = 'Indy_Mass_Balance_Table.csv';   % data/ folder of the repository (optional)
 SOL_ROOT = '';
 for k = 1:numel(SOL_ROOTS)
     if isfile(fullfile(SOL_ROOTS{k}, Date, 'Solution-MethodC.mat')), SOL_ROOT = SOL_ROOTS{k}; break; end

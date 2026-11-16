@@ -8,24 +8,34 @@ Code and per-transect results for
 
 The scripts compute Marion County (Indianapolis) CH4 emission rates from 37 aircraft mass balance flights of the Indianapolis Flux Experiment (INFLUX, 2011 to 2016) with four definitions of the background (Downwind Edge, Upwind, Adjusted ABL Upwind, Upwind Edge), the South Side Landfill emission rates, the sensitivity analyses of the Supporting Information, and all figures of the paper.
 
-If you use this code or these data, please cite the paper and the Zenodo archive of this repository. Each release is archived at Zenodo with its own DOI: version 1.0, the version of the paper, is https://doi.org/10.5281/zenodo.24184834, and the badge above always points to the latest version. `CITATION.cff` holds the citation metadata.
+If you use this code or these data, please cite the paper and the Zenodo archive of this repository. Each release is archived at Zenodo with its own DOI, and the badge above always points to the latest version. Version 1.1 is the version cited in the paper. It differs from version 1.0 (https://doi.org/10.5281/zenodo.24184834) only in the names of three files (`Indy_Mass_Balance_Table.csv` and `.xlsx` in `data/`, and `plot_Figure12_case_study.m` in `figures/`), in the page layout of the spreadsheet, and in the documentation. `CITATION.cff` holds the citation metadata.
 
 ## Contents
 
 | Folder | What is in it |
 |---|---|
-| `data/` | `EPA_SSLF_GHGRP.csv` (EPA Greenhouse Gas Reporting Program estimates for the South Side Landfill, Figure 11); `Barkley2026_SSLF_annual.csv` (annual landfill emission rates of Barkley et al. (2026), their Figure 5: Tower 10, 2017 to 2024, mean and full range of their sensitivity analysis in kg CH4/h, provided by Z. Barkley; Figure 11, please cite that paper); `Indy_Mass_Balance_Table_v5.csv` and `.xlsx` (Table S1: one row per downwind transect, emission rates of the four methods and of the landfill, backgrounds, ABL height, wind, cos θ; the second worksheet of the `.xlsx` lists the daily estimates of the five flights of 2011 next to those of Cambaliza et al. (2015), Section 3.1.2); `diagnostic_ratios.csv` (diagnostic ratio of each flight day with the simulated wind and the quantities it is built from, Section 3.2); `Landfill_transects.csv` (landfill emission rate, plume width, enhancement and the plume end points of every transect with a quantified plume); `Landfill_daily.csv` (daily landfill emission rates, the mean of the quantified transects of each of the 31 days); `Trajectory_check_legs.csv` (per-transect results of the trajectory analysis, Text S2); `SSLF_plume_criteria.csv` (best-fit spike near the projected landfill position on every downwind transect, its classification by the automated selection and by the analysts, and the landfill emission rates with both edge definitions, Text S3); `emissions/` (the CH4 emissions of Figure 6 as text files with latitude, longitude and emission of each grid cell in kg CH4 per hour: the five regional sectors on the 9 km and 3 km WRF-Chem grids, from the EPA gridded inventory of Maasakkers et al. (2016), and the 1 km Marion County emissions of Lamb et al. (2016) for natural gas, landfill and wastewater, as received; the simulations and Figure 6 use the landfill file multiplied by 1.4 and the wastewater file divided by 3.5; please cite those papers) |
+| `data/` | `EPA_SSLF_GHGRP.csv` (EPA Greenhouse Gas Reporting Program estimates for the South Side Landfill, Figure 11); `Barkley2026_SSLF_annual.csv` (annual landfill emission rates of Barkley et al. (2026), their Figure 5: Tower 10, 2017 to 2024, mean and full range of their sensitivity analysis in kg CH4/h, provided by Z. Barkley; Figure 11, please cite that paper); `Indy_Mass_Balance_Table.csv` and `.xlsx` (Table S1: one row per downwind transect, emission rates of the four methods and of the landfill, backgrounds, ABL height, wind, cos θ; the second worksheet of the `.xlsx` lists the daily estimates of the five flights of 2011 next to those of Cambaliza et al. (2015), Section 3.1.2); `diagnostic_ratios.csv` (diagnostic ratio of each flight day with the simulated wind and the quantities it is built from, Section 3.2); `Landfill_transects.csv` (landfill emission rate, plume width, enhancement and the plume end points of every transect with a quantified plume); `Landfill_daily.csv` (daily landfill emission rates, the mean of the quantified transects of each of the 31 days); `Trajectory_check_legs.csv` (per-transect results of the trajectory analysis, Text S2); `SSLF_plume_criteria.csv` (best-fit spike near the projected landfill position on every downwind transect, its classification by the automated selection and by the analysts, and the landfill emission rates with both edge definitions, Text S3); `emissions/` (the CH4 emissions of Figure 6 as text files with latitude, longitude and emission of each grid cell in kg CH4 per hour: the five regional sectors on the 9 km and 3 km WRF-Chem grids, from the EPA gridded inventory of Maasakkers et al. (2016), and the 1 km Marion County emissions of Lamb et al. (2016) for natural gas, landfill and wastewater, as received; the simulations and Figure 6 use the landfill file multiplied by 1.4 and the wastewater file divided by 3.5; please cite those papers) |
 | `mass_balance/` | `MassBalanceMethodA.m` to `MassBalanceMethodD.m` (the four background methods, one script each; A = Downwind Edge, B = Upwind, C = Adjusted ABL Upwind, D = Upwind Edge); `Run_MethodsCD.m` (batch driver for C and D without figures); `Collect_Solutions.m` (gathers the per-day results into `All_Solutions.mat` and `All_Solutions.csv`); `MassBalanceLandfill.m` (mass balance of the South Side Landfill plume on each downwind transect, Section 2.4; writes the `Landfill/<yyyymmdd>_Loop<k>.mat` files; the plume end points were chosen by eye and are stored, so the script can rerun without interaction); `Collect_Landfill.m` (gathers the landfill results, including the stored plume end points, into `Landfill_transects.csv` and `Landfill_daily.csv`) |
 | `analyses/` | `Wind_sensitivity_R2_5.m` (transect wind inside the integral of Equation 1, Section 2.3); `Trajectory_check_R2_7.m` (back trajectories with the measured and the WRF-Chem winds, Text S2 and Figure S6); `Check_PBLH_20121004.m` (WRF-Chem boundary layer height on 10/04/2012, Section 2.3.3 and Text S4); `Get_Flight_Wind_Directions.m` (transect-by-transect wind statistics for Table S1); `Diagnostic_ratio.m` (the WRF-Chem diagnostic ratio of each flight day, Section 3.2, computed from the released WRF subsets; writes `diagnostic_ratios.csv` and `Diag_ratio.mat`); `SSLF_plume_criteria.m` (objective characterization of the landfill plume selection, Text S3: Gaussian spike fit on every downwind transect, agreement with the analysts, sensitivity of the landfill estimate to the thresholds; writes `SSLF_plume_criteria.csv`, a summary figure and two inspection figures with the fit of every transect); `Table_S1_statistics.m` (statistics quoted in the paper that follow directly from Table S1: time of day of the downwind transects in UTC and local time, Section 2.2; order in which the transect altitudes were flown, Section 3.1.1; landfill plume and landfill emission rates by wind direction, Section 3.1.3 and Text S3) |
 | `wrf/` | `WRF_configuration.txt` (the complete WRF-Chem configuration of the simulations, recovered from the global attributes of the model output: grid, physics, dynamics, time step, eta levels, start dates of every run); `WRF_configuration_from_wrfout.m` (writes that file); `Extract_WRF_subset.m` (writes the subset of the model output used in the paper, one `.mat` file per flight day, see "WRF-Chem simulations" below); `WRF_subsets_README.txt` (description of those files and of their variables, with reading examples for MATLAB and Python; the same text accompanies the Zenodo data set) |
 | `figures/` | one script per figure, see the table below; `alongTrackKm.m` is a helper used by `plot_Figure2_Edge.m` and `Flight_Atlas.m` |
 
+### Table S1 and Data Sets S1 to S4 of the paper
+
+| In the paper | File |
+|---|---|
+| Table S1 | `data/Indy_Mass_Balance_Table.xlsx` |
+| Data Set S1 | `data/Indy_Mass_Balance_Table.csv` |
+| Data Set S2 | `data/diagnostic_ratios.csv` |
+| Data Set S3 | `data/Trajectory_check_legs.csv` |
+| Data Set S4 | `data/SSLF_plume_criteria.csv` |
+
 ### Figure scripts
 
 | Figure | Script | Inputs |
 |---|---|---|
-| 1 | `plot_Figure1_seasonal.m` | `data/Indy_Mass_Balance_Table_v5.csv` |
-| 2 | `plot_Figure2_Edge.m` (+ `alongTrackKm.m`) | aircraft data of 10/04/2012; flux labels from `data/Indy_Mass_Balance_Table_v5.csv` |
+| 1 | `plot_Figure1_seasonal.m` | `data/Indy_Mass_Balance_Table.csv` |
+| 2 | `plot_Figure2_Edge.m` (+ `alongTrackKm.m`) | aircraft data of 10/04/2012; flux labels from `data/Indy_Mass_Balance_Table.csv` |
 | 3, 5 | `plot_Figure3_5_Upwind.m` | aircraft data, Solution files of 10/04/2012 |
 | 4 | `plot_Figure4_profiles.m` | aircraft data, `ElevationData.nc` |
 | 6 | `plot_Figure6_emissions.m` | `data/emissions/` (emission files of the 9 km and 3 km domains and of Marion County) |
@@ -34,18 +44,18 @@ If you use this code or these data, please cite the paper and the Zenodo archive
 | 9 | `plot_Figure9_SSLF.m` | landfill results (`Landfill/<date>_Loop<k>.mat`, from `MassBalanceLandfill.m`), `All_Solutions.mat` |
 | 10, S1 | `plot_FigS1_Fig10_trends.m` | `TempsAndTimes.mat`, `All_Solutions.mat`, landfill results |
 | 11 | `plot_Figure11_SSLF_comparison.m` | `data/Landfill_daily.csv`, `data/EPA_SSLF_GHGRP.csv` (EPA GHGRP Equations HH-6 and HH-8 for the landfill, 2011 to 2023), `data/Barkley2026_SSLF_annual.csv` (annual tower estimates, 2017 to 2024; the figure shows 2017 to 2019, `YEAR_MAX` in the script) |
-| 12 | `Figure12_v2.m` | WRF-Chem maps and time series of 11/19/2014 |
+| 12 | `plot_Figure12_case_study.m` | WRF-Chem maps and time series of 11/19/2014 |
 | 13 | `plot_Figure13_diagnostic.m` | `Diag_ratio.mat` (diagnostic ratios, from `Diagnostic_ratio.m`), `All_Solutions.mat` |
 | 14 | `plot_Figure14_bootstrap.m` | `Diag_ratio.mat`, `All_Solutions.mat` |
-| S2 | `plot_FigS2_seasonal_flux.py` | `data/Indy_Mass_Balance_Table_v5.csv` |
-| S3 | `plot_FigS3_SSLF_altitude.py` | `data/Indy_Mass_Balance_Table_v5.csv` |
-| S4 | `plot_FigS4_flux_vs_meteorology.py` | `data/Indy_Mass_Balance_Table_v5.csv`, `data/diagnostic_ratios.csv` |
+| S2 | `plot_FigS2_seasonal_flux.py` | `data/Indy_Mass_Balance_Table.csv` |
+| S3 | `plot_FigS3_SSLF_altitude.py` | `data/Indy_Mass_Balance_Table.csv` |
+| S4 | `plot_FigS4_flux_vs_meteorology.py` | `data/Indy_Mass_Balance_Table.csv`, `data/diagnostic_ratios.csv` |
 | S5 | `plot_FigS5_ratio_vs_wind.py` | same two csv files |
 | S6 | `Trajectory_check_R2_7.m` | aircraft data, Solution files, WRF-Chem output |
 | S7 | `plot_FigS7_SSLF_criteria.py` | `data/SSLF_plume_criteria.csv` |
 | Document S1 (flight atlas) | `Flight_Atlas.m` | aircraft data, Solution files |
 
-Figures S2, S3, S4, S5 and S7 (Python) and Figure 11 (MATLAB, no toolboxes) can be reproduced from the files in `data/` alone (copy the csv files into `figures/` and run, for example, `python3 plot_FigS4_flux_vs_meteorology.py`; `plot_FigS3_SSLF_altitude.py` also prints the comparison of the citywide emission rates on the transects with and without a quantified landfill plume of Section 3.1.3, and `plot_FigS7_SSLF_criteria.py` the agreement statistics and Table S2 of the Supporting Information). `analyses/Table_S1_statistics.m` also needs only `data/Indy_Mass_Balance_Table_v5.csv` and `data/SSLF_plume_criteria.csv` (copy them next to the script; base MATLAB or GNU Octave). All other scripts need the input data described below.
+Figures S2, S3, S4, S5 and S7 (Python) and Figure 11 (MATLAB, no toolboxes) can be reproduced from the files in `data/` alone (copy the csv files into `figures/` and run, for example, `python3 plot_FigS4_flux_vs_meteorology.py`; `plot_FigS3_SSLF_altitude.py` also prints the comparison of the citywide emission rates on the transects with and without a quantified landfill plume of Section 3.1.3, and `plot_FigS7_SSLF_criteria.py` the agreement statistics and Table S2 of the Supporting Information). `analyses/Table_S1_statistics.m` also needs only `data/Indy_Mass_Balance_Table.csv` and `data/SSLF_plume_criteria.csv` (copy them next to the script; base MATLAB or GNU Octave). All other scripts need the input data described below.
 
 ## Input data
 
@@ -71,7 +81,7 @@ The full model output is too large to archive. `wrf/Extract_WRF_subset.m` writes
 
 1. Run `MassBalanceMethodA.m` and `MassBalanceMethodB.m` (each loops over the 37 days and writes `<yyyymmdd>/Solution-MethodA.mat`, `-MethodB.mat` with the per-transect emission rates), then `Run_MethodsCD.m` for Methods C and D.
 2. Run `Collect_Solutions.m` from the folder that holds the day folders. It writes `All_Solutions.mat` (structures `SolA` to `SolD`) and `All_Solutions.csv`, one row per transect with the emission rate of each method, the transect height, the boundary layer height, the mean wind and cos θ.
-3. The daily means of `All_Solutions.csv` are the values of Tables 2 and 3 of the paper; Table S1 (`data/Indy_Mass_Balance_Table_v5.csv`) adds the landfill estimates and the backgrounds.
+3. The daily means of `All_Solutions.csv` are the values of Tables 2 and 3 of the paper; Table S1 (`data/Indy_Mass_Balance_Table.csv`) adds the landfill estimates and the backgrounds.
 4. For the landfill, run `MassBalanceLandfill.m` (one `Landfill/<yyyymmdd>_Loop<k>.mat` per downwind transect; with `REUSE_BOUNDS = true` it takes the plume end points from `data/Landfill_transects.csv` instead of asking for them) and then `Collect_Landfill.m`, which applies cos θ of each transect and writes the per-transect and daily tables. `analyses/SSLF_plume_criteria.m` then characterizes the plume selection on every transect (Text S3).
 5. The diagnostic ratio of each flight day (Section 3.2) is computed by `analyses/Diagnostic_ratio.m` from the WRF-Chem tracers along idealized downwind transects at about 300 m above ground, 17 to 20 UTC; it reads the released `WRF_subset_<yyyymmdd>.mat` files, so anyone can rerun it. `data/diagnostic_ratios.csv` holds the result for all 37 days.
 

@@ -3,7 +3,7 @@
 %
 %  Inputs (current folder):
 %    Landfill_daily.csv   (data/ folder of the repository; or Table S1,
-%                         Indy_Mass_Balance_Table_v5.csv) daily SSLF emission rates of
+%                         Indy_Mass_Balance_Table.csv) daily SSLF emission rates of
 %                         the 31 flight days with a quantified plume (Collect_Landfill.m);
 %                         their mean is the 26 +/- 5 mol/s of the paper.
 %    EPA_SSLF_GHGRP.csv   EPA Greenhouse Gas Reporting Program estimates for the SSLF,
@@ -89,14 +89,14 @@ if isfile('Landfill_daily.csv')                          % one row per flight da
     opts = setvartype(opts, 'Date', 'char');
     T = readtable('Landfill_daily.csv', opts);
     dates = T.Date;  f = T.Flux_Landfill_mean_mols;
-elseif isfile('Indy_Mass_Balance_Table_v5.csv')         % Table S1, one row per transect: daily means of the landfill column
-    opts = detectImportOptions('Indy_Mass_Balance_Table_v5.csv');
+elseif isfile('Indy_Mass_Balance_Table.csv')         % Table S1, one row per transect: daily means of the landfill column
+    opts = detectImportOptions('Indy_Mass_Balance_Table.csv');
     opts = setvartype(opts, 'Date', 'char');
-    T = readtable('Indy_Mass_Balance_Table_v5.csv', opts);
+    T = readtable('Indy_Mass_Balance_Table.csv', opts);
     [dates, ~, g] = unique(T.Date);
     f = accumarray(g, T.Flux_Landfill_mols, [], @(v) mean(v, 'omitnan'));
 else
-    error('Landfill_daily.csv (or Indy_Mass_Balance_Table_v5.csv) not found: copy it from the data/ folder of the repository.');
+    error('Landfill_daily.csv (or Indy_Mass_Balance_Table.csv) not found: copy it from the data/ folder of the repository.');
 end
 yr = cellfun(@(d) str2double(d(1:4)), dates);             % dates are yyyy-mm-dd
 ok = ~isnan(f);
